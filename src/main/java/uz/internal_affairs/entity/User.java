@@ -20,11 +20,9 @@ import uz.internal_affairs.entity.role.Role;
 @AllArgsConstructor
 @Entity
 @Table(name = "_user")
-public class User implements UserDetails {
+public class User extends  Base implements UserDetails {
 
-  @Id
-  @GeneratedValue
-  private Integer id;
+
   private String firstname;
   private String lastname;
   @Column(unique = true,nullable = false)
