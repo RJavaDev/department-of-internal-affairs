@@ -22,8 +22,11 @@ public class Citizen extends Base {
     private String phoneNumber;
     private String locationInformation;//joyi haqidsa
     private String placeOfImport;//olib kelingan joy
+    @Column(columnDefinition="TEXT")
     private String causeOfEvent;//voqiya sababi(text)
+    @Column(columnDefinition="TEXT")
     private String EmployeeSummary; //Hodim Xulosasi(text)
+    @Column(columnDefinition="TEXT")
     private String statement;//  tuzilgan bayonat (text)
     private String huntingWeaponModel;// qurol madeli
     private String huntingWeaponCode;// qurol raqami

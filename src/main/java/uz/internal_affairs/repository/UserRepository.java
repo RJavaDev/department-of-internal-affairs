@@ -6,6 +6,6 @@ import uz.internal_affairs.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-  Optional<User> findByEmail(String email);
+  Optional<User> findByUsername(String email);
 
 }
