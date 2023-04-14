@@ -1,6 +1,5 @@
 package uz.internal_affairs.security.token;
 
-import uz.internal_affairs.security.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.internal_affairs.entity.User;
 
 @Data
 @Builder

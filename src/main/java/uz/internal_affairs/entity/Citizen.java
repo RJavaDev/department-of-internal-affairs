@@ -29,6 +29,10 @@ public class Citizen extends Base {
     private String huntingWeaponCode;// qurol raqami
     @ManyToOne
     private CategoryEntity category;
+    @OneToOne
+    private FingerprintPicture fingerprintPicture;
+    @ManyToOne
+    private User user;
 
 
 }

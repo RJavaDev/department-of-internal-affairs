@@ -4,8 +4,6 @@ import uz.internal_affairs.security.config.JwtService;
 import uz.internal_affairs.security.token.Token;
 import uz.internal_affairs.security.token.TokenRepository;
 import uz.internal_affairs.security.token.TokenType;
-import uz.internal_affairs.security.user.Role;
-import uz.internal_affairs.security.user.User;
 import uz.internal_affairs.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
