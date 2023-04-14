@@ -1,6 +1,6 @@
-package uz.internal_affairs.security.token;
+package uz.internal_affairs.config.token;
 
-import uz.internal_affairs.security.user.User;
+import uz.internal_affairs.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

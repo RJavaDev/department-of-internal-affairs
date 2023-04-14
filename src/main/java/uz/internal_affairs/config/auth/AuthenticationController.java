@@ -1,4 +1,4 @@
-package uz.internal_affairs.security.auth;
+package uz.internal_affairs.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

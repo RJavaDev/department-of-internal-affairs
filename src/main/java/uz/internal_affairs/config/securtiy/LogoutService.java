@@ -1,6 +1,6 @@
-package uz.internal_affairs.security.config;
+package uz.internal_affairs.config.securtiy;
 
-import uz.internal_affairs.security.token.TokenRepository;
+import uz.internal_affairs.config.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package uz.internal_affairs.security.config;
+package uz.internal_affairs.config.securtiy;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

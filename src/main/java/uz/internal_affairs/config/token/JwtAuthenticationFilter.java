@@ -1,4 +1,4 @@
-package uz.internal_affairs.security.config;
+package uz.internal_affairs.config.token;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

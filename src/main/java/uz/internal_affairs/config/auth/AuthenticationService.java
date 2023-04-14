@@ -1,12 +1,12 @@
-package uz.internal_affairs.security.auth;
+package uz.internal_affairs.config.auth;
 
-import uz.internal_affairs.security.config.JwtService;
-import uz.internal_affairs.security.token.Token;
-import uz.internal_affairs.security.token.TokenRepository;
-import uz.internal_affairs.security.token.TokenType;
-import uz.internal_affairs.security.user.Role;
-import uz.internal_affairs.security.user.User;
-import uz.internal_affairs.security.user.UserRepository;
+import uz.internal_affairs.config.token.JwtService;
+import uz.internal_affairs.config.token.Token;
+import uz.internal_affairs.config.token.TokenRepository;
+import uz.internal_affairs.config.token.TokenType;
+import uz.internal_affairs.entity.role.Role;
+import uz.internal_affairs.entity.User;
+import uz.internal_affairs.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
