@@ -13,11 +13,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Citizen {
+public class Citizen extends Base {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     private String firstName;
     private String lastName;
     private String middleName;
@@ -30,7 +27,8 @@ public class Citizen {
     private String statement;//  tuzilgan bayonat (text)
     private String huntingWeaponModel;// qurol madeli
     private String huntingWeaponCode;// qurol raqami
-
+    @ManyToOne
+    private CategoryEntity category;
 
 
 }
