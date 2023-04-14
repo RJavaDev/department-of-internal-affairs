@@ -1,4 +1,4 @@
-package uz.internal_affairs.config.auth;
+package uz.internal_affairs.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
+public class LoginRequest {
 
   private String username;
   String password;

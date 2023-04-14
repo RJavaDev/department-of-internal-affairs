@@ -1,4 +1,4 @@
-package uz.internal_affairs.config.auth;
+package uz.internal_affairs.auth;
 
 import uz.internal_affairs.config.token.JwtService;
 import uz.internal_affairs.config.token.Token;
@@ -38,7 +38,7 @@ public class AuthenticationService {
         .build();
   }
 
-  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+  public AuthenticationResponse authenticate(LoginRequest request) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             request.getUsername(),
