@@ -1,7 +1,8 @@
-package uz.internal_affairs.config.auth;
+package uz.internal_affairs.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,15 +15,17 @@ public class AuthenticationController {
 
   private final AuthenticationService service;
 
+  @PreAuthorize("hasAnyAuthority('SUPER_ADMIN','ADMIN')")
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(
       @RequestBody RegisterRequest request
   ) {
     return ResponseEntity.ok(service.register(request));
   }
-  @PostMapping("/authenticate")
+
+  @PostMapping("/login")
   public ResponseEntity<AuthenticationResponse> authenticate(
-      @RequestBody AuthenticationRequest request
+      @RequestBody LoginRequest request
   ) {
     return ResponseEntity.ok(service.authenticate(request));
   }
