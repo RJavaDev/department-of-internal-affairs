@@ -8,7 +8,7 @@ import uz.internal_affairs.entity.CategoryEntity;
 @Service
 @RequiredArgsConstructor
 public class CategoryService implements BaseService<CategoryEntity, CategoryDto>{
-    private final CategoryService categoryService;
+
     @Override
     public CategoryDto add(CategoryEntity categoryEntity) {
 

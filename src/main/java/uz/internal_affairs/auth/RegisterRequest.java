@@ -1,4 +1,4 @@
-package uz.internal_affairs.config.auth;
+package uz.internal_affairs.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
