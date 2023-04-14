@@ -1,4 +1,4 @@
-package uz.internal_affairs.security.config;
+package uz.internal_affairs.config.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,4 +1,4 @@
-package uz.internal_affairs.security.token;
+package uz.internal_affairs.config.token;
 
 import java.util.List;
 import java.util.Optional;

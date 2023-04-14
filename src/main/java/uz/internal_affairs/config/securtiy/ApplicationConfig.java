@@ -1,6 +1,6 @@
-package uz.internal_affairs.security.config;
+package uz.internal_affairs.config.securtiy;
 
-import uz.internal_affairs.security.user.UserRepository;
+import uz.internal_affairs.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

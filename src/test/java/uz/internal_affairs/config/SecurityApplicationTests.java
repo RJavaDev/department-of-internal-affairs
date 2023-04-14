@@ -1,4 +1,4 @@
-package uz.internal_affairs.security;
+package uz.internal_affairs.config;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
