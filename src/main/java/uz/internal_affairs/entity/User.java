@@ -31,6 +31,8 @@ public class User extends  Base implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private Role role;
+  @OneToOne
+  private FingerprintPicture fingerprintPicture;
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
