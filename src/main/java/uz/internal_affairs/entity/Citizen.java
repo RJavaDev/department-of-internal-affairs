@@ -33,7 +33,7 @@ public class Citizen extends Base {
     @ManyToOne
     private Category category;
     @OneToOne
-    private FingerprintPicture fingerprintPicture;
+    private FingerprintImage fingerprintPicture;
 
     @ManyToOne
     private User user;
