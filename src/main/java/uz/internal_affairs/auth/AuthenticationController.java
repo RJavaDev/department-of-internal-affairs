@@ -27,10 +27,5 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "hallo";
-    }
-
 
 }

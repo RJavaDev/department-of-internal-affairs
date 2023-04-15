@@ -6,6 +6,8 @@ import uz.internal_affairs.dto.NeighborhoodDTO;
 import uz.internal_affairs.entity.Neighborhood;
 import uz.internal_affairs.repository.NeighborhoodRepository;
 
+import java.util.*;
+
 @Service
 @RequiredArgsConstructor
 public class NeighborhoodService implements BaseService<NeighborhoodDTO,Neighborhood>{
@@ -17,8 +19,13 @@ public class NeighborhoodService implements BaseService<NeighborhoodDTO,Neighbor
         Neighborhood neighborhood = Neighborhood.builder()
                 .regionName(neighborhoodDTO.getNeighborhoodName())
                 .regionId(neighborhoodDTO.getRegionId())
+
                 .build();
        return neighborhoodRepository.save(neighborhood);
+    }
+
+    public List<Neighborhood> getNeighborhoodRepository() {
+        return neighborhoodRepository.findAll();
     }
 
     @Override

@@ -18,8 +18,5 @@ public class Neighborhood {
     private Integer regionId;
     @ManyToOne
     @JoinColumn(name = "region_id", insertable = false, updatable = false)
-    private Region attach;
-
-//    @ManyToOne
-//    private Region region;
+    private Region region;
 }
