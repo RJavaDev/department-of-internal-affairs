@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/internal_affairs
+    url: jdbc:postgresql://localhost:5432/baza
     username: postgres
-    password: 123
+    password: 1660
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

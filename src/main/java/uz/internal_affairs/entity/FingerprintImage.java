@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class FingerprintPicture extends Base {
+public class FingerprintImage extends Base {
 
     private String path;
     @Column(unique = true)

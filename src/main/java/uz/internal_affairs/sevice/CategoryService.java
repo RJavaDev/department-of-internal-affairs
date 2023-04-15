@@ -2,6 +2,7 @@ package uz.internal_affairs.sevice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.internal_affairs.common.exception.RecordNotFountException;
 import uz.internal_affairs.dto.CategoryDto;
 import uz.internal_affairs.entity.Category;
 import uz.internal_affairs.repository.CategoryRepository;
@@ -11,32 +12,38 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService implements BaseService<CategoryDto,Category>{
+public class CategoryService implements BaseService<CategoryDto, Category> {
 
     private final CategoryRepository categoryRepository;
 
     @Override
     public Category add(CategoryDto categoryDto) {
         Optional<Category> byName = categoryRepository.findByName(categoryDto.getName());
-        if (byName.isPresent()){
+        if (byName.isPresent()) {
             throw new IllegalArgumentException();
         }
-        Category category=Category.of(categoryDto);
+        Category category = Category.of(categoryDto);
         return categoryRepository.save(category);
     }
 
     @Override
     public Category update(Long id, CategoryDto categoryDto) {
         Optional<Category> byId = categoryRepository.findById(id);
+        if (byId.isPresent()) {
+            Category category = byId.get();
+            category.setName(categoryDto.getName());
+            category.setScore(categoryDto.getScore());
+            return categoryRepository.save(category);
 
-        return null;
+        }
+        throw new RecordNotFountException("Category not fount");
     }
-
-
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new RecordNotFountException(String.format("Category %s not fount", id)));
+        categoryRepository.delete(category);
+        return true;
     }
 
 

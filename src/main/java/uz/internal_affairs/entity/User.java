@@ -31,7 +31,7 @@ public class User extends  Base implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
   @OneToOne
-  private FingerprintPicture fingerprintPicture;
+  private FingerprintImage fingerprintImage;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
