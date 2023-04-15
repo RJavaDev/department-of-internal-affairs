@@ -38,7 +38,15 @@ public class User extends  Base implements UserDetails {
   private FingerprintImage fingerprintImage;
 
   public static User of(UserDto userDto){
-    return null;
+    return User.builder()
+            .birtDate(userDto.getBirtDate())
+            .phoneNumber(userDto.getPhoneNumber())
+            .firstname(userDto.getFirstname())
+            .lastname(userDto.getLastname())
+            .middleName(userDto.getMiddleName())
+            .username(userDto.getUsername())
+            .role(userDto.getRole()== null ? Role.USER: Role.valueOf(userDto.getRole()))
+            .build();
 
   }
 
