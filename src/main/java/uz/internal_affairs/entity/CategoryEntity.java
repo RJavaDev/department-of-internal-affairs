@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 @Entity
 public class CategoryEntity extends Base{
 
-
     @Column(unique = true, nullable = false)
     private String name;
     private Integer score;

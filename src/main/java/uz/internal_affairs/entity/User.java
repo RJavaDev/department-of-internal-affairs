@@ -1,7 +1,7 @@
 package uz.internal_affairs.entity;
 
 import jakarta.persistence.*;
-import uz.internal_affairs.config.token.Token;
+//import uz.internal_affairs.config.token.Token;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +22,6 @@ import uz.internal_affairs.entity.role.Role;
 @Table(name = "_user")
 public class User extends  Base implements UserDetails {
 
-
   private String firstname;
   private String lastname;
   @Column(unique = true,nullable = false)
@@ -31,9 +30,6 @@ public class User extends  Base implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private Role role;
-
-  @OneToMany(mappedBy = "user")
-  private List<Token> tokens;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
