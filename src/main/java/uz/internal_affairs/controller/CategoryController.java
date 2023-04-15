@@ -1,6 +1,5 @@
 package uz.internal_affairs.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +28,6 @@ public class CategoryController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return ResponseEntity.ok(categoryService.delete(id));
     }
-
 
 
 }
