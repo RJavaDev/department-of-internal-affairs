@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.entity.role.Role;
 
 @Data
@@ -32,6 +33,11 @@ public class User extends  Base implements UserDetails {
   private Role role;
   @OneToOne
   private FingerprintImage fingerprintImage;
+
+  public static User of(UserDto userDto){
+    return null;
+
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
