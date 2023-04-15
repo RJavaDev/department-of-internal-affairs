@@ -1,11 +1,6 @@
 package uz.internal_affairs.dto;
 
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
-import uz.internal_affairs.entity.CategoryEntity;
-import uz.internal_affairs.entity.FingerprintPicture;
-import uz.internal_affairs.entity.User;
 
 import java.util.Date;
 
