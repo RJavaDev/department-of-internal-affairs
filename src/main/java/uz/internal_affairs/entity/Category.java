@@ -12,7 +12,6 @@ import uz.internal_affairs.dto.CategoryDto;
 @Entity
 public class Category extends Base{
 
-
     @Column(unique = true, nullable = false)
     private String name;
     private Integer score;

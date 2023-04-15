@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 //import uz.internal_affairs.config.token.Token;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.entity.role.Role;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +25,9 @@ public class User extends  Base implements UserDetails {
 
   private String firstname;
   private String lastname;
+  private String middleName;
+  private Date birtDate;
+  private String phoneNumber;
   @Column(unique = true,nullable = false)
   private String username;
   private String password;
