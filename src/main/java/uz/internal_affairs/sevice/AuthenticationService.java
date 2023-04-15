@@ -1,6 +1,9 @@
-package uz.internal_affairs.auth;
+package uz.internal_affairs.sevice;
 
 import uz.internal_affairs.config.token.JwtService;
+import uz.internal_affairs.dto.TokenResponseDTO;
+import uz.internal_affairs.dto.LoginRequestDTO;
+import uz.internal_affairs.dto.UserDTO;
 import uz.internal_affairs.entity.role.Role;
 import uz.internal_affairs.entity.User;
 import uz.internal_affairs.repository.UserRepository;
@@ -18,7 +21,7 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  public TokenResponseDTO register(UserDTO request) {
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
@@ -27,12 +30,12 @@ public class AuthenticationService {
         .role(Role.USER)
         .build();
     var jwtToken = jwtService.generateToken(user);
-    return AuthenticationResponse.builder()
+    return TokenResponseDTO.builder()
         .token(jwtToken)
         .build();
   }
 
-  public AuthenticationResponse authenticate(LoginRequest request) {
+  public TokenResponseDTO authenticate(LoginRequestDTO request) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             request.getUsername(),
@@ -42,7 +45,7 @@ public class AuthenticationService {
     var user = repository.findByUsername(request.getUsername())
         .orElseThrow();
     var jwtToken = jwtService.generateToken(user);
-    return AuthenticationResponse.builder()
+    return TokenResponseDTO.builder()
         .token(jwtToken)
         .build();
   }

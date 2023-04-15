@@ -15,7 +15,7 @@ import uz.internal_affairs.repository.UserRepository;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final UserRepository userRepository;
+
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping( "/user/list")
     public ResponseEntity<User> getUserList(){

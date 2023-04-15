@@ -3,7 +3,7 @@ package uz.internal_affairs.sevice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.internal_affairs.common.exception.RecordNotFountException;
-import uz.internal_affairs.dto.CategoryDto;
+import uz.internal_affairs.dto.CategoryDTO;
 import uz.internal_affairs.entity.Category;
 import uz.internal_affairs.repository.CategoryRepository;
 
@@ -12,12 +12,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService implements BaseService<CategoryDto, Category> {
+public class CategoryService implements BaseService<CategoryDTO, Category> {
 
     private final CategoryRepository categoryRepository;
 
     @Override
-    public Category add(CategoryDto categoryDto) {
+    public Category add(CategoryDTO categoryDto) {
         Optional<Category> byName = categoryRepository.findByName(categoryDto.getName());
         if (byName.isPresent()) {
             throw new IllegalArgumentException();
@@ -27,7 +27,7 @@ public class CategoryService implements BaseService<CategoryDto, Category> {
     }
 
     @Override
-    public Category update(Long id, CategoryDto categoryDto) {
+    public Category update(Long id, CategoryDTO categoryDto) {
         Optional<Category> byId = categoryRepository.findById(id);
         if (byId.isPresent()) {
             Category category = byId.get();

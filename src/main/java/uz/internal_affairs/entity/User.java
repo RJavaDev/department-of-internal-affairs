@@ -11,7 +11,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import uz.internal_affairs.dto.UserDto;
+import uz.internal_affairs.dto.UserDTO;
 import uz.internal_affairs.entity.role.Role;
 
 @Getter
@@ -37,7 +37,7 @@ public class User extends  Base implements UserDetails {
   @OneToOne
   private FingerprintImage fingerprintImage;
 
-  public static User of(UserDto userDto){
+  public static User of(UserDTO userDto){
     return User.builder()
             .birtDate(userDto.getBirtDate())
             .phoneNumber(userDto.getPhoneNumber())
@@ -45,7 +45,7 @@ public class User extends  Base implements UserDetails {
             .lastname(userDto.getLastname())
             .middleName(userDto.getMiddleName())
             .username(userDto.getUsername())
-            .role(userDto.getRole()== null ? Role.USER: Role.valueOf(userDto.getRole()))
+            .role(userDto.getRole()== null ? Role.USER: userDto.getRole())
             .build();
 
   }

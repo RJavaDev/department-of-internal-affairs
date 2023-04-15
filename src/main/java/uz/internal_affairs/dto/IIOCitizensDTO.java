@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.Date;
 
 @Data
-public class IIOCitizens {
+public class IIOCitizensDTO {
     private String firstName;
     private String lastName;
     private String middleName;
