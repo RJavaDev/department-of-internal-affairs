@@ -15,8 +15,9 @@ public class BaseServerEntity extends BaseObject{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "status", length = 32, columnDefinition = "varchar(32) default 'CREATED'")
     @Enumerated(value = EnumType.STRING)
-    private EntityStatus status;
+    private EntityStatus status = EntityStatus.CREATED;
 
     /**********************************
      ***    convert ENTITY to DTO   ***

@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.dto.IIOCitizensDto;
+import uz.internal_affairs.dto.response.DataGrid;
+import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.dto.response.HttpResponse;
 import uz.internal_affairs.sevice.CitizenService;
 
@@ -32,6 +34,20 @@ public class CitizenController {
         }
         return response;
     }
+
+    @PostMapping("/data")
+    public HttpResponse<Object> dataGrid(HttpServletRequest request, @RequestBody FilterForm filter){
+        HttpResponse<Object> response = HttpResponse.build(false);
+        try{
+            DataGrid<IIOCitizensDto> datagrid = citizenService.dataGrid(request, filter);
+            response.code(HttpResponse.Status.OK).success(true).body(datagrid);
+        }
+        catch (Exception e){
+            response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
+
 
     @GetMapping("/test")
     public String getTest(){

@@ -1,9 +1,14 @@
 package uz.internal_affairs.dto.response;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+@Getter
+@Setter
 public class FilterForm implements Serializable {
     private static final long serialVersionUID = -1183975305038088044L;
 
@@ -11,7 +16,5 @@ public class FilterForm implements Serializable {
 
     private Integer length;
 
-    private List<OrderForm> order;
-
-    private Map<String, String> filter;
+    private Map<String, Object> filter;
 }
