@@ -1,17 +1,17 @@
 package uz.internal_affairs.entity;
 
 import jakarta.persistence.*;
-//import uz.internal_affairs.config.token.Token;
-
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import uz.internal_affairs.dto.UserDTO;
+import uz.internal_affairs.constants.TableNames;
+import uz.internal_affairs.dto.UserDto;
+import uz.internal_affairs.entity.base.BaseServerModifierEntity;
 import uz.internal_affairs.entity.role.Role;
 
 @Getter
@@ -20,8 +20,8 @@ import uz.internal_affairs.entity.role.Role;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
-public class User extends  Base implements UserDetails {
+@Table(name = TableNames.DEPARTMENT_USER)
+public class UserEntity extends BaseServerModifierEntity implements UserDetails {
 
   private String firstname;
   private String lastname;
@@ -35,10 +35,10 @@ public class User extends  Base implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
   @OneToOne
-  private FingerprintImage fingerprintImage;
+  private FileEntity fileEntity;
 
-  public static User of(UserDTO userDto){
-    return User.builder()
+  public static UserEntity of(UserDto userDto){
+    return UserEntity.builder()
             .birtDate(userDto.getBirtDate())
             .phoneNumber(userDto.getPhoneNumber())
             .firstname(userDto.getFirstname())
@@ -52,7 +52,7 @@ public class User extends  Base implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.name()));
+    return Arrays.asList(new SimpleGrantedAuthority(role.name()));
   }
 
   @Override

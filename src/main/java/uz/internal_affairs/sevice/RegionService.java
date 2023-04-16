@@ -2,21 +2,21 @@ package uz.internal_affairs.sevice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.internal_affairs.dto.RegionDTO;
-import uz.internal_affairs.entity.Region;
+import uz.internal_affairs.dto.RegionDto;
+import uz.internal_affairs.entity.RegionEntity;
 import uz.internal_affairs.repository.RegionRepository;
 
 @Service
 @RequiredArgsConstructor
-public class RegionService implements BaseService<RegionDTO, Region>{
+public class RegionService implements BaseService<RegionDto, RegionEntity>{
 
     private final RegionRepository regionRepository;
     @Override
-    public Region add(RegionDTO regionDTO) {
-        Region region = Region.builder()
-                .regionName(regionDTO.getRegionName())
+    public RegionEntity add(RegionDto regionDTO) {
+        RegionEntity regionEntity = RegionEntity.builder()
+//                .regionName(regionDTO.getRegionName())
                 .build();
-        return regionRepository.save(region);
+        return regionRepository.save(regionEntity);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class RegionService implements BaseService<RegionDTO, Region>{
     }
 
     @Override
-    public Region update(Long id, RegionDTO regionDTO) {
+    public RegionEntity update(Long id, RegionDto regionDTO) {
         return null;
     }
 }

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uz.internal_affairs.dto.RegionDTO;
-import uz.internal_affairs.entity.Region;
+import uz.internal_affairs.dto.RegionDto;
+import uz.internal_affairs.entity.RegionEntity;
 import uz.internal_affairs.sevice.RegionService;
 
 @RestController
@@ -17,7 +17,7 @@ public class RegionController {
     private final RegionService regionService;
 
     @PostMapping("/add")
-    public ResponseEntity<Region> add(@RequestBody RegionDTO regionDTO){
+    public ResponseEntity<RegionEntity> add(@RequestBody RegionDto regionDTO){
         return ResponseEntity.ok(regionService.add(regionDTO));
     }
 }

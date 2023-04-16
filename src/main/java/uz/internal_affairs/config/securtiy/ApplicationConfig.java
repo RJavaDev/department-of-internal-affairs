@@ -1,9 +1,10 @@
 package uz.internal_affairs.config.securtiy;
 
-import uz.internal_affairs.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import uz.internal_affairs.config.DataSourceConfig;
+import uz.internal_affairs.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;

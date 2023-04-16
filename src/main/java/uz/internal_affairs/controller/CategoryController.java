@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import uz.internal_affairs.dto.CategoryDTO;
+import uz.internal_affairs.dto.CategoryDto;
 import uz.internal_affairs.sevice.CategoryService;
 
 @Controller
@@ -19,7 +19,7 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody CategoryDTO categoryDto) {
+    public ResponseEntity<?> add(@RequestBody CategoryDto categoryDto) {
         return ResponseEntity.ok(categoryService.add(categoryDto));
     }
 

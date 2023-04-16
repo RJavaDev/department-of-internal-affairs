@@ -7,8 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uz.internal_affairs.entity.User;
-import uz.internal_affairs.repository.UserRepository;
+import uz.internal_affairs.entity.UserEntity;
 
 @RestController
 @RequestMapping("/admin")
@@ -18,7 +17,7 @@ public class AdminController {
 
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping( "/user/list")
-    public ResponseEntity<User> getUserList(){
+    public ResponseEntity<UserEntity> getUserList(){
         return null;
     }
 

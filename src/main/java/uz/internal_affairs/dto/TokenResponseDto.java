@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequestDTO {
+public class TokenResponseDto {
 
-  private String username;
-  String password;
+  private String token;
 }
