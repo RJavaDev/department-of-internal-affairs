@@ -14,7 +14,7 @@
 	<name>department-internal-affairs</name>
 	<description>Department of Internal Affairs</description>
 	<properties>
-		<hibernate-types.version>2.19.2</hibernate-types.version>
+		<flyway.version>9.8.1</flyway.version>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
@@ -32,10 +32,11 @@
 		</dependency>
 
 		<!--Database Migrations-->
+
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-			<version>8.5.0</version>
+			<version>${flyway.version}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->

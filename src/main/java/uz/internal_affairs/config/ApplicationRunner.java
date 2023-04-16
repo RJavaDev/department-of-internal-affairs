@@ -22,7 +22,7 @@ public class ApplicationRunner implements CommandLineRunner {
                 .baselineOnMigrate(true)
                 .sqlMigrationPrefix("C")
                 .baselineVersion("0")
-//                .outOfOrder(true)
+                .outOfOrder(true)
                 .load();
         // Start the migration
         flyway.migrate();

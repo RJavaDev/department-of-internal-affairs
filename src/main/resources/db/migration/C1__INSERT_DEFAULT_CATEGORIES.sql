@@ -1,3 +1,4 @@
+--create categories
 insert into d_category(status, created_date, name, score)
 VALUES
     ('CREATED', NOW(), 'category-1', 1),
