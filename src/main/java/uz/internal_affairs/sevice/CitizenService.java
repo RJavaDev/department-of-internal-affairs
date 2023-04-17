@@ -12,9 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.internal_affairs.common.util.DateUtil;
 import uz.internal_affairs.common.util.SecurityUtils;
-import uz.internal_affairs.dto.IIOCitizensDto;
+import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.entity.CategoryEntity;
@@ -54,7 +55,8 @@ public class CitizenService {
         String category = null;
         if(filterMap != null){
             // some logic here
-            if(filterMap.containsKey("category")) category = MapUtils.getString(filterMap, "category");
+            if(filterMap.containsKey("category"))
+                category = MapUtils.getString(filterMap, "category");
         }
         Page<CitizenEntity> entities = citizenRepository.rows(pageable, category);
         List<IIOCitizensDto> list = new ArrayList<>();
@@ -68,6 +70,7 @@ public class CitizenService {
         return list;
     }
 
+    @Transactional(readOnly = true)
     public Integer getTotal(FilterForm filterForm){
         Map<String, Object> filter = filterForm.getFilter();
         String category = null;
@@ -103,5 +106,12 @@ public class CitizenService {
         }
         return entity.getDto(new IIOCitizensDto());
     }
+
+    @Transactional
+    public Boolean deleteIIOCitizen(Long id){
+        Integer numAffectedRows = citizenRepository.deleteCitizen(id);
+        return numAffectedRows > 0;
+    }
+
 
 }
