@@ -15,7 +15,6 @@ import uz.internal_affairs.entity.UserEntity;
 public class AdminController {
 
 
-    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping( "/user/list")
     public ResponseEntity<UserEntity> getUserList(){
         return null;
