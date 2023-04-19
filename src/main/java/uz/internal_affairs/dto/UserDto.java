@@ -1,5 +1,6 @@
 package uz.internal_affairs.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import uz.internal_affairs.entity.role.Role;
 
@@ -12,7 +13,9 @@ public class UserDto {
     private String middleName;
     private Date birtDate;
     private String phoneNumber;
+    @NotBlank(message = "username must not be empty")
     private String username;
+    @NotBlank(message = "password must not be empty")
     private String password;
     private Role role;
     private String image;

@@ -61,6 +61,7 @@ public class CitizenController {
 
     @GetMapping("/test")
     public String getTest(){
+
         return SecurityUtils.getUsername();
     }
 }
