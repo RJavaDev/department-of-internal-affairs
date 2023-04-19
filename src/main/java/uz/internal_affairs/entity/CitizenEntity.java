@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import uz.internal_affairs.constants.TableNames;
+import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.dto.base.citizen.BaseCitizenDto;
+import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.entity.base.BaseCitizenEntity;
 import java.util.Date;
 
@@ -57,8 +59,12 @@ public class CitizenEntity extends BaseCitizenEntity {
     @JoinColumn(name = "userId", insertable = false, updatable = false)
     private UserEntity userEntity;
 
-    public <T extends BaseCitizenDto> T getDto(T dto){
-        BeanUtils.copyProperties(this, dto);
-        return dto;
+    /************************************************************
+     * ******************** CONVERT TO DTO ***********************
+     * ***********************************************************/
+
+    public IIOCitizensDto toIIOCitizenDto(){
+        return toDto(this, new IIOCitizensDto());
     }
+
 }

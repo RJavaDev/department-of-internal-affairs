@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.internal_affairs.constants.TableNames;
+import uz.internal_affairs.dto.FileDto;
+import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.entity.base.BaseServerModifierEntity;
 
 @Getter
@@ -22,4 +24,12 @@ public class FileEntity extends BaseServerModifierEntity {
     @Column(unique = true)
     private String name;                // encoded uuid
     private String originalName;        // original file-name
+
+
+    /************************************************************
+     * ******************** CONVERT TO DTO ***********************
+     * ***********************************************************/
+    public FileDto toDto(){
+        return toDto(this, new FileDto());
+    }
 }

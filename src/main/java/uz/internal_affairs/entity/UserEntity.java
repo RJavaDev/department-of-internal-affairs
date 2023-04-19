@@ -14,6 +14,7 @@ import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.entity.base.BaseServerModifierEntity;
 import uz.internal_affairs.entity.role.Role;
 
+
 @Getter
 @Setter
 @Builder
@@ -36,6 +37,12 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
   private Role role;
   @OneToOne
   private FileEntity fileEntity;
+
+//  @Column(name = "region_id")
+//  private Long regionId;
+//  @ManyToOne
+//  @JoinColumn(name = "region_id", insertable = false, updatable = false)
+//  private RegionEntity region;
 
   public static UserEntity of(UserDto userDto){
     return UserEntity.builder()
@@ -84,4 +91,12 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
   public boolean isEnabled() {
     return true;
   }
+
+
+    /************************************************************
+    * ******************** CONVERT TO DTO ***********************
+    * ***********************************************************/
+    public UserDto toDto(String... ignoreProperties){
+        return toDto(this, new UserDto(), ignoreProperties);
+    }
 }

@@ -88,6 +88,7 @@ public class CitizenService {
         Optional<CategoryEntity> optCategory = categoryRepository.findByName(dto.getCategory());
 
         CitizenEntity entity = new CitizenEntity();
+        entity.forCreate();
         if(optCategory.isPresent()){
             BeanUtils.copyProperties(dto, entity, "birthDate");
             entity.setBirtDate(DateUtils.parseDate(dto.getBirtDate(), DateUtil.PATTERN14));
@@ -104,7 +105,7 @@ public class CitizenService {
             entity.setUserId(user.getId());
             citizenRepository.save(entity);
         }
-        return entity.getDto(new IIOCitizensDto());
+        return entity.toIIOCitizenDto();
     }
 
     @Transactional
