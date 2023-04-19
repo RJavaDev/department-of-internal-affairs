@@ -1,9 +1,12 @@
 package uz.internal_affairs.sevice;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.dto.UserDto;
+import uz.internal_affairs.dto.UserScoreDto;
 import uz.internal_affairs.entity.UserEntity;
 import uz.internal_affairs.repository.UserRepository;
 
@@ -25,6 +28,14 @@ public class UserService implements BaseService<UserDto, UserEntity> {
         //barmoq izi
         // rasim
         return userRepository.save(userEntity);
+    }
+
+    public UserScoreDto getUserScore(){
+        UserEntity currentUser = userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Not found!"));
+        UserScoreDto userScoreDto = new UserScoreDto();
+        userScoreDto.setUserScoreDay(userRepository.getUserScoreToday(currentUser.getId()));
+        userScoreDto.setUserScoreMonth(userRepository.getUserScoreMonth(currentUser.getId()));
+        return userScoreDto;
     }
 
 

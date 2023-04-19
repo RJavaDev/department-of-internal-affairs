@@ -8,9 +8,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * Created by Xurshidbek.R.R on 10/30/2022.
- */
 @Component
 @Getter
 public class DataSourceConfig {

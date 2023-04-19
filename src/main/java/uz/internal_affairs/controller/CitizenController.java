@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uz.internal_affairs.common.util.SecurityUtils;
-import uz.internal_affairs.dto.IIOCitizensDto;
+import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.dto.response.HttpResponse;
@@ -48,6 +48,16 @@ public class CitizenController {
         return response;
     }
 
+    @DeleteMapping("/delete/{id}")
+    public HttpResponse<Object> delete(@PathVariable("id") Long id){
+        HttpResponse<Object> response = HttpResponse.build(false);
+        try {
+            response.code(HttpResponse.Status.OK).success(true).body(citizenService.deleteIIOCitizen(id));
+        }catch (Exception e){
+            response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
 
     @GetMapping("/test")
     public String getTest(){
