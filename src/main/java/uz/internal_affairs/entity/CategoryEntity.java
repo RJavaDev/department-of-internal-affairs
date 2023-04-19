@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import uz.internal_affairs.constants.TableNames;
 import uz.internal_affairs.dto.CategoryDto;
+import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.entity.base.BaseServerModifierEntity;
 
 @Getter
@@ -24,5 +25,12 @@ public class CategoryEntity extends BaseServerModifierEntity {
                 .name(categoryDto.getName())
                 .score(categoryDto.getScore())
                 .build();
+    }
+
+    /************************************************************
+     * ******************** CONVERT TO DTO ***********************
+     * ***********************************************************/
+    public CategoryDto toDto(){
+        return toDto(this, new CategoryDto());
     }
 }

@@ -1,11 +1,13 @@
 package uz.internal_affairs.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.entity.UserEntity;
 
 @Repository
@@ -42,4 +44,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             "    ON dc.category_id = d_cg.id", nativeQuery = true)
     Integer getUserScoreMonth(@Param("myUserId") Long myUserId);
 
+    @Query(value = "SELECT * FROM d_user WHERE status <> 'DELETE'", nativeQuery = true)
+    List<UserEntity> getAllUser();
+
+    @Query(value = "SELECT * FROM d_user WHERE id = :userInformationId AND status <> 'DELETE'", nativeQuery = true)
+    UserEntity getUserInformation(@Param("userInformationId") Long id);
 }
