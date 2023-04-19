@@ -1,8 +1,10 @@
 package uz.internal_affairs.dto;
 
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 import uz.internal_affairs.dto.base.BaseServerModifierDto;
 import uz.internal_affairs.entity.UserEntity;
+import uz.internal_affairs.entity.base.BaseServerModifierEntity;
 import uz.internal_affairs.entity.role.Role;
 
 import java.util.Date;
@@ -25,6 +27,11 @@ public class UserDto extends BaseServerModifierDto {
     private String image;
     private String fingerprint;
 
+
+    public UserEntity toEntity( String... ignoreProperties) {
+        return super.toEntity(this, new UserEntity(), ignoreProperties);
+    }
+
 /*    public static UserDto of(UserEntity user) {
         return UserDto.builder()
                 .firstname(user.getFirstname())
@@ -37,4 +44,6 @@ public class UserDto extends BaseServerModifierDto {
                 //image and barmoq izi
                 .build();
     }*/
+
+
 }

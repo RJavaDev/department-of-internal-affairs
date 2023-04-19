@@ -79,20 +79,26 @@ public class UserService implements BaseService<UserDto, UserEntity> {
         return responseInformationUser;
     }
 
-    public Boolean updateUser(Long id, UserDto userDto) {
+    public Boolean updateUser(UserDto userDto) {
         UserEntity user = userRepository.findByUsername(
                 SecurityUtils.getUsername()).orElseThrow(() ->
                 new UsernameNotFoundException("curren user username not found!")
         );
 
-        if(!StringUtils.equals(userDto.getUsername(), user.getUsername())) return false;
+        if(!Objects.equals(userDto.getId(), user.getId())) return false;
 
         log.atInfo().log("!Обновление... пользователя");
 
         user.forUpdate();
+
         if(!StringUtils.isEmpty(userDto.getFirstname())) user.setFirstname(userDto.getFirstname());
         if(!StringUtils.isEmpty(userDto.getLastname())) user.setLastname(userDto.getLastname());
-//        userRepository.save(user);
+        if(!StringUtils.isEmpty(userDto.getUsername()))user.setUsername(userDto.getUsername());
+        if(!StringUtils.isEmpty(userDto.getPhoneNumber())) user.setPhoneNumber(user.getPhoneNumber());
+        if(!StringUtils.isEmpty(userDto.getMiddleName())) user.setMiddleName(user.getMiddleName());
+        if(!StringUtils.isEmpty(userDto.getPassword())) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        userRepository.save(user);
         return true;
     }
 }

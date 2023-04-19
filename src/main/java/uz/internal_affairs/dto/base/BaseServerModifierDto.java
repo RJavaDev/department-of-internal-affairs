@@ -2,6 +2,8 @@ package uz.internal_affairs.dto.base;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
+import uz.internal_affairs.entity.base.BaseServerModifierEntity;
 
 import java.time.LocalDateTime;
 
@@ -15,4 +17,9 @@ public class BaseServerModifierDto extends BaseServerDto{
     private Long createdBy;
 
     private Long modifiedBy;
+
+    public <DTO extends BaseServerModifierDto, ENTITY extends BaseServerModifierEntity> ENTITY toEntity(DTO dto, ENTITY entity, String... ignoreProperties){
+        BeanUtils.copyProperties(dto, entity, ignoreProperties);
+        return entity;
+    }
 }

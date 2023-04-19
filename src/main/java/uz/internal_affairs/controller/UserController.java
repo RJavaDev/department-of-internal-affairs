@@ -1,5 +1,7 @@
 package uz.internal_affairs.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +15,14 @@ import java.util.*;
 @RestController
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
+@Tag(name = "User Controller", description = "This Controller for user")
 public class UserController {
 
     private final UserService userService;
 
     @GetMapping("/get-user-score")
+    @Operation(summary = "Method of user score",
+            description = "points accumulated by the current user for one day and one month")
     public HttpResponse<Object> getUserScore() {
         HttpResponse<Object> response = HttpResponse.build(false);
         try {
@@ -58,12 +63,12 @@ public class UserController {
         return response;
     }
 
-    @PostMapping("/update/{id}")
-    public HttpResponse<Object> userUpdate(@PathVariable Long id, @RequestBody UserDto userDto) {
+    @PostMapping("/update")
+    public HttpResponse<Object> userUpdate(@RequestBody UserDto userDto) {
         HttpResponse<Object> response = new HttpResponse<>(true);
 
         try {
-            if (userService.updateUser(id, userDto)) {
+            if (userService.updateUser(userDto)) {
                 return response.code(HttpResponse.Status.OK).success(true);
             }
         } catch (Exception ex) {

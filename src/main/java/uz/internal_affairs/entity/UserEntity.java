@@ -38,11 +38,11 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
   @OneToOne
   private FileEntity fileEntity;
 
-  @Column(name = "region_id")
-  private Long regionId;
-  @ManyToOne
-  @JoinColumn(name = "region_id", insertable = false, updatable = false)
-  private RegionEntity region;
+//  @Column(name = "region_id")
+//  private Long regionId;
+//  @ManyToOne
+//  @JoinColumn(name = "region_id", insertable = false, updatable = false)
+//  private RegionEntity region;
 
   public static UserEntity of(UserDto userDto){
     return UserEntity.builder()
