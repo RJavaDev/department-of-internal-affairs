@@ -1,8 +1,8 @@
 package uz.internal_affairs.sevice;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.config.token.JwtService;
-import uz.internal_affairs.constants.EntityStatus;
 import uz.internal_affairs.dto.TokenResponseDto;
 import uz.internal_affairs.dto.LoginRequestDto;
 import uz.internal_affairs.dto.UserDto;
@@ -15,23 +15,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository repository;
-    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
 
-    public TokenResponseDto register(UserDto request)  {
-        String jwtToken=null;
-        try {
-            jwtToken = jwtService.generateToken(userService.add(request));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+    public TokenResponseDto register(UserDto request) {
+
+        String jwtToken = jwtService.generateToken(saveUser(request));
+
         return TokenResponseDto.builder()
                 .token(jwtToken)
                 .build();
@@ -49,6 +47,22 @@ public class AuthenticationService {
         return TokenResponseDto.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public UserEntity saveUser(UserDto userDto){
+
+
+        Optional<UserEntity> byUsername = userRepository.findByUsername(userDto.getUsername());
+        if (byUsername.isPresent()) {
+            throw new IllegalArgumentException();
+        }
+
+        UserEntity user = userDto.toEntity("password","role");
+        user.forCreate(userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(()-> new UsernameNotFoundException(" user name not found!")).getId());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRole(userDto.getRole() == null ? Role.USER : userDto.getRole());
+
+        return userRepository.save(user);
     }
 
 }

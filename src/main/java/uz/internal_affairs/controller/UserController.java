@@ -96,4 +96,22 @@ public class UserController {
         return response;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    public HttpResponse<Object> userDelete(@PathVariable Long id) {
+
+        HttpResponse<Object> response = new HttpResponse<>(true);
+
+        try {
+            if (userService.userDelete(id)) {
+                return response.code(HttpResponse.Status.OK).success(true).body(Boolean.TRUE).message("User deleted successfully");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
+
+
 }
