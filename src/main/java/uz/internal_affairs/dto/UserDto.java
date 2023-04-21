@@ -18,7 +18,9 @@ public class UserDto extends BaseServerModifierDto {
     private String firstname;
     private String lastname;
     private String middleName;
-    private Date birtDate;
+    private String birtDate;
+    private String regionId;
+    private String neighborhoodId;
     private String phoneNumber;
     private String username;
     private String password;
@@ -31,19 +33,5 @@ public class UserDto extends BaseServerModifierDto {
     public UserEntity toEntity( String... ignoreProperties) {
         return super.toEntity(this, new UserEntity(), ignoreProperties);
     }
-
-/*    public static UserDto of(UserEntity user) {
-        return UserDto.builder()
-                .firstname(user.getFirstname())
-                .lastname(user.getLastname())
-                .middleName(user.getMiddleName())
-                .birtDate(user.getBirtDate())
-                .phoneNumber(user.getPhoneNumber())
-                .username(user.getUsername())
-                .role(user.getRole())
-                //image and barmoq izi
-                .build();
-    }*/
-
 
 }

@@ -29,6 +29,8 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
   private String middleName;
   private Date birtDate;
   private String phoneNumber;
+  private String regionId;
+  private String neighborhoodId;
   @Column(unique = true,nullable = false)
   private String username;
   private String password;
@@ -44,18 +46,18 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
 //  @JoinColumn(name = "region_id", insertable = false, updatable = false)
 //  private RegionEntity region;
 
-  public static UserEntity of(UserDto userDto){
-    return UserEntity.builder()
-            .birtDate(userDto.getBirtDate())
-            .phoneNumber(userDto.getPhoneNumber())
-            .firstname(userDto.getFirstname())
-            .lastname(userDto.getLastname())
-            .middleName(userDto.getMiddleName())
-            .username(userDto.getUsername())
-            .role(userDto.getRole()== null ? Role.USER: userDto.getRole())
-            .build();
-
-  }
+//  public static UserEntity of(UserDto userDto){
+//    return UserEntity.builder()
+//            .birtDate(userDto.getBirtDate())
+//            .phoneNumber(userDto.getPhoneNumber())
+//            .firstname(userDto.getFirstname())
+//            .lastname(userDto.getLastname())
+//            .middleName(userDto.getMiddleName())
+//            .username(userDto.getUsername())
+//            .role(userDto.getRole()== null ? Role.USER: userDto.getRole())
+//            .build();
+//
+//  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

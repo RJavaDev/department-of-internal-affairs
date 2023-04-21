@@ -2,6 +2,7 @@ package uz.internal_affairs.sevice;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import uz.internal_affairs.config.token.JwtService;
+import uz.internal_affairs.constants.EntityStatus;
 import uz.internal_affairs.dto.TokenResponseDto;
 import uz.internal_affairs.dto.LoginRequestDto;
 import uz.internal_affairs.dto.UserDto;
@@ -14,26 +15,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public TokenResponseDto register(UserDto request) {
-        UserEntity user = UserEntity.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .build();
-        repository.save(user);
-
-        String jwtToken = jwtService.generateToken(user);
-
+    public TokenResponseDto register(UserDto request)  {
+        String jwtToken=null;
+        try {
+            jwtToken = jwtService.generateToken(userService.add(request));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         return TokenResponseDto.builder()
                 .token(jwtToken)
                 .build();

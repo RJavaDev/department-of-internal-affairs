@@ -1,5 +1,6 @@
 package uz.internal_affairs.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@ import uz.internal_affairs.dto.UserDto;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication Controller", description = "This Controller for user")
 public class AuthenticationController {
 
     private final AuthenticationService service;
