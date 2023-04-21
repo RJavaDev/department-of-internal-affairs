@@ -21,7 +21,6 @@ import java.util.*;
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-
     private Logger log = LoggerFactory.getLogger(getClass().getName());
 
     public List<UserDto> getUserAll() {
@@ -41,16 +40,12 @@ public class UserService {
         return userScoreDto;
     }
 
-
     public UserDto getUserInformation(Long id) {
-
         UserEntity userInformation = userRepository.getUserInformation(id);
         UserDto responseInformationUser = userInformation.toDto();
         UserScoreDto responseUserScore = new UserScoreDto();
-
         responseUserScore.setUserScoreDay(userRepository.getUserScoreToday(id));
         responseUserScore.setUserScoreMonth(userRepository.getUserScoreMonth(id));
-
         responseInformationUser.setUserScore(responseUserScore);
 
         return responseInformationUser;
@@ -62,13 +57,10 @@ public class UserService {
                 SecurityUtils.getUsername()).orElseThrow(() ->
                 new UsernameNotFoundException("curren user username not found!")
         );
-
         if (!Objects.equals(userDto.getId(), user.getId())) return false;
 
         log.atInfo().log("!Обновление... пользователя");
-
         user.forUpdate();
-
         if (!StringUtils.isEmpty(userDto.getFirstname())) user.setFirstname(userDto.getFirstname());
         if (!StringUtils.isEmpty(userDto.getLastname())) user.setLastname(userDto.getLastname());
         if (!StringUtils.isEmpty(userDto.getUsername())) user.setUsername(userDto.getUsername());
@@ -76,7 +68,6 @@ public class UserService {
         if (!StringUtils.isEmpty(userDto.getMiddleName())) user.setMiddleName(user.getMiddleName());
         if (!StringUtils.isEmpty(userDto.getPassword()))
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
         userRepository.save(user);
         return true;
     }

@@ -5,9 +5,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.dto.UserScoreDto;
+import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.dto.response.HttpResponse;
+import uz.internal_affairs.entity.CitizenEntity;
+import uz.internal_affairs.sevice.CitizenService;
 import uz.internal_affairs.sevice.UserService;
 
 import java.util.*;
@@ -19,6 +23,7 @@ import java.util.*;
 public class UserController {
 
     private final UserService userService;
+    private final CitizenService citizenService;
 
     @GetMapping("/get-user-score")
     @Operation(summary = "Method of user score",
@@ -72,6 +77,20 @@ public class UserController {
                 return response.code(HttpResponse.Status.OK).success(true);
             }
         } catch (Exception ex) {
+            response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
+
+    @GetMapping("/my-work-done")
+    public HttpResponse<Object> getWorkDone() {
+        HttpResponse<Object> response = new HttpResponse<>(true);
+        try {
+            String username = SecurityUtils.getUsername();
+            List<IIOCitizensDto> workDone = citizenService.getWorkDone(username);
+            response.code(HttpResponse.Status.OK).success(true).body(workDone).message("successfully!!!");
+        } catch (Exception e) {
+            e.printStackTrace();
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
         }
         return response;

@@ -1,7 +1,9 @@
 package uz.internal_affairs.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
@@ -12,6 +14,7 @@ import uz.internal_affairs.sevice.CitizenService;
 
 @RestController
 @RequestMapping("/api/v1/citizen")
+@Tag(name = "Citizen Controller", description = "This Controller for user")
 public class CitizenController {
 
     @Autowired
@@ -57,10 +60,5 @@ public class CitizenController {
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
         }
         return response;
-    }
-
-    @GetMapping("/test")
-    public String getTest(){
-        return SecurityUtils.getUsername();
     }
 }

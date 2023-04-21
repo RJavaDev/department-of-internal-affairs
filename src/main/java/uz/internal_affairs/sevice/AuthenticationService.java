@@ -1,6 +1,8 @@
 package uz.internal_affairs.sevice;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import uz.internal_affairs.common.util.DateUtil;
 import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.config.token.JwtService;
 import uz.internal_affairs.dto.TokenResponseDto;
@@ -15,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.Optional;
 
 @Service
@@ -27,9 +30,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public TokenResponseDto register(UserDto request) {
-
         String jwtToken = jwtService.generateToken(saveUser(request));
-
         return TokenResponseDto.builder()
                 .token(jwtToken)
                 .build();
@@ -50,17 +51,18 @@ public class AuthenticationService {
     }
 
     public UserEntity saveUser(UserDto userDto){
-
-
         Optional<UserEntity> byUsername = userRepository.findByUsername(userDto.getUsername());
         if (byUsername.isPresent()) {
             throw new IllegalArgumentException();
         }
-
         UserEntity user = userDto.toEntity("password","role");
-        user.forCreate(userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(()-> new UsernameNotFoundException(" user name not found!")).getId());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRole(userDto.getRole() == null ? Role.USER : userDto.getRole());
+        try {
+            user.forCreate(userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(()-> new UsernameNotFoundException(" user name not found!")).getId());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setBirtDate(DateUtils.parseDate(userDto.getBirtDate(),DateUtil.PATTERN14));
+            user.setRole(userDto.getRole() == Role.ADMIN ? Role.ADMIN : Role.USER);        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
 
         return userRepository.save(user);
     }
