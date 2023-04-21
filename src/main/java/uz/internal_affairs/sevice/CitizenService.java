@@ -35,10 +35,8 @@ import java.util.stream.Collectors;
 @Service("citizenService")
 @RequiredArgsConstructor
 public class CitizenService {
-
     private final CitizenRepository citizenRepository;
     private final CategoryRepository categoryRepository;
-
     private final UserRepository userRepository;
 
 
@@ -52,7 +50,6 @@ public class CitizenService {
     public List<IIOCitizensDto> rows(HttpServletRequest request, FilterForm filterForm) {
         Sort sort = Sort.by(Sort.Order.by("id"));
         Pageable pageable = PageRequest.of(filterForm.getStart() / filterForm.getLength(), filterForm.getLength(), sort);
-
         Map<String, Object> filterMap = filterForm.getFilter();
         String category = null;
         if (filterMap != null) {
@@ -77,12 +74,10 @@ public class CitizenService {
         Map<String, Object> filter = filterForm.getFilter();
         String category = null;
         if (filter != null) {
-            // some logic here
             category = MapUtils.getString(filter, "category");
         }
         return citizenRepository.getTotal(category);
     }
-
 
     public IIOCitizensDto saveCitizen(HttpServletRequest request, IIOCitizensDto dto) throws ParseException {
         if (dto == null || StringUtils.isEmpty(dto.getCategory())) return null;
@@ -115,7 +110,6 @@ public class CitizenService {
         Integer numAffectedRows = citizenRepository.deleteCitizen(id);
         return numAffectedRows > 0;
     }
-
 
     public List<IIOCitizensDto> getWorkDone(String username) {
         List<CitizenEntity> myWorkDone = citizenRepository.getMyWorkDone(username);

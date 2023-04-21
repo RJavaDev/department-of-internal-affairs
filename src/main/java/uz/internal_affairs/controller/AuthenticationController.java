@@ -21,16 +21,12 @@ public class AuthenticationController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<TokenResponseDto> register(@RequestBody UserDto userDto) {
-
         return ResponseEntity.ok(service.register(userDto));
-
     }
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> authenticate(@RequestBody LoginRequestDto request) {
-
         return ResponseEntity.ok(service.authenticate(request));
-
     }
 
 

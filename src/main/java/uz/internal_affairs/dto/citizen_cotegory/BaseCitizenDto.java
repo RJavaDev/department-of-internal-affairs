@@ -1,4 +1,4 @@
-package uz.internal_affairs.dto.base.citizen;
+package uz.internal_affairs.dto.citizen_cotegory;
 
 import lombok.Getter;
 import lombok.Setter;

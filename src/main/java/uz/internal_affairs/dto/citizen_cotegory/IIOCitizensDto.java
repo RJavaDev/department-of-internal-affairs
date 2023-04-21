@@ -2,7 +2,6 @@ package uz.internal_affairs.dto.citizen_cotegory;
 
 import lombok.*;
 import uz.internal_affairs.dto.FileDto;
-import uz.internal_affairs.dto.base.citizen.BaseCitizenDto;
 
 @Getter
 @Setter
