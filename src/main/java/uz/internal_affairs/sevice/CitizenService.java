@@ -24,6 +24,7 @@ import uz.internal_affairs.entity.CitizenEntity;
 import uz.internal_affairs.entity.UserEntity;
 import uz.internal_affairs.repository.CategoryRepository;
 import uz.internal_affairs.repository.CitizenRepository;
+import uz.internal_affairs.repository.RegionRepository;
 import uz.internal_affairs.repository.UserRepository;
 
 import java.util.*;
@@ -38,6 +39,7 @@ public class CitizenService {
     private final CitizenRepository citizenRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final RegionRepository regionRepository;
 
 
     public DataGrid<IIOCitizensDto> dataGrid(HttpServletRequest request, FilterForm filterForm) throws Exception {
@@ -115,8 +117,13 @@ public class CitizenService {
         List<CitizenEntity> myWorkDone = citizenRepository.getMyWorkDone(username);
         return myWorkDone.stream().map(e -> {
             IIOCitizensDto dto = new IIOCitizensDto();
-            BeanUtils.copyProperties(e, dto, "birthDate");
+            BeanUtils.copyProperties(e, dto,"birtDate");
+            dto.setBirtDate(e.getBirtDate().toString());
+            dto.setRegionId(regionRepository.findById(Long.valueOf(e.getRegionId())).get().getName());
+            dto.setNeighborhoodId(regionRepository.findById(Long.valueOf(e.getNeighborhoodId())).get().getName());
+            dto.setCategory(categoryRepository.findById(Math.toIntExact(e.getCategoryId())).get().getName());
             return dto;
         }).collect(Collectors.toList());
+
     }
 }

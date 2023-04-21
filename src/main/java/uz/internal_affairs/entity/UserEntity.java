@@ -79,6 +79,7 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
     * ******************** CONVERT TO DTO ***********************
     * ***********************************************************/
     public UserDto toDto(String... ignoreProperties){
-        return toDto(this, new UserDto(), ignoreProperties);
+
+      return toDto(this, new UserDto(), ignoreProperties);
     }
 }
