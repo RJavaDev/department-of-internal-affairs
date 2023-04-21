@@ -2,6 +2,7 @@ package uz.internal_affairs.dto.citizen_cotegory;
 
 import lombok.*;
 import uz.internal_affairs.dto.FileDto;
+import uz.internal_affairs.entity.CitizenEntity;
 
 @Getter
 @Setter
@@ -36,4 +37,8 @@ public class IIOCitizensDto extends BaseCitizenDto {
     private String employeeSummary;
 
     private String placeOfImport;
+
+
+
+
 }

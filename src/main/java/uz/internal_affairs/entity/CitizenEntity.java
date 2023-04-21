@@ -62,6 +62,7 @@ public class CitizenEntity extends BaseCitizenEntity {
      * ***********************************************************/
 
     public IIOCitizensDto toIIOCitizenDto(){
+
         return toDto(this, new IIOCitizensDto());
     }
 
