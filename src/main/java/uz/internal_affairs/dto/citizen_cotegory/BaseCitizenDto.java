@@ -17,4 +17,6 @@ public class BaseCitizenDto extends BaseServerModifierDto {
     private String phoneNumber;
 
     private String category;            // category name
+
+    private Long categoryId;
 }

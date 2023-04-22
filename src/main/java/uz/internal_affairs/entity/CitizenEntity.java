@@ -18,9 +18,9 @@ import java.util.Date;
 @Table(name = TableNames.DEPARTMENT_CITIZEN)
 public class CitizenEntity extends BaseCitizenEntity {
 
-    private Date birtDate;
+    private Date birthDate;
     private Long regionId;
-    private String neighborhoodId;
+
     private String locationInformation;//joyi haqida
 
     private String placeOfImport;//olib kelingan joy

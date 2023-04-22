@@ -23,6 +23,7 @@ import uz.internal_affairs.entity.CategoryEntity;
 import uz.internal_affairs.entity.CitizenEntity;
 import uz.internal_affairs.entity.RegionEntity;
 import uz.internal_affairs.entity.UserEntity;
+import uz.internal_affairs.interfaces.CitizenInterface;
 import uz.internal_affairs.repository.CategoryRepository;
 import uz.internal_affairs.repository.CitizenRepository;
 import uz.internal_affairs.repository.RegionRepository;
@@ -45,7 +46,7 @@ public class CitizenService {
 
     public DataGrid<IIOCitizensDto> dataGrid(HttpServletRequest request, FilterForm filterForm) throws Exception {
         DataGrid<IIOCitizensDto> dataGrid = new DataGrid<>();
-        dataGrid.setRows(rows(request, filterForm));
+        dataGrid.setRows(rows2(request, filterForm));
         dataGrid.setTotal(getTotal(filterForm));
         return dataGrid;
     }
@@ -66,11 +67,50 @@ public class CitizenService {
             list = entities.stream().map(e -> {
                 IIOCitizensDto dto = new IIOCitizensDto();
                 BeanUtils.copyProperties(e, dto, "birthDate");
+                dto.setBirthDate(DateUtil.format(e.getBirthDate(), DateUtil.PATTERN14));
+//                if(e.getRegionId() != null) dto.setRegionAddress(regionRepository.getRegionRecursive(e.getRegionId()).get());
                 return dto;
             }).collect(Collectors.toList());
         }
         return list;
     }
+
+    public List<IIOCitizensDto> rows2(HttpServletRequest request, FilterForm filterForm) {
+        Sort sort = Sort.by(Sort.Order.by("id"));
+        Pageable pageable = PageRequest.of(filterForm.getStart() / filterForm.getLength(), filterForm.getLength(), sort);
+        Map<String, Object> filterMap = filterForm.getFilter();
+        String category = null;
+        if (filterMap != null) {
+            // some logic here
+            if (filterMap.containsKey("category"))
+                category = MapUtils.getString(filterMap, "category");
+        }
+        Page<CitizenInterface> pageCitizens = citizenRepository.list(category, pageable);
+        List<IIOCitizensDto> list = new ArrayList<>();
+        if (!pageCitizens.isEmpty()) {
+            for(CitizenInterface cInterface : pageCitizens){
+                IIOCitizensDto dto = new IIOCitizensDto();
+                dto.setId(cInterface.getId());
+                dto.setCreatedBy(cInterface.getCreated_by());
+                dto.setCategoryId(cInterface.getCategory_id());
+                dto.setPhoneNumber(cInterface.getPhone_number());
+                dto.setFirstName(cInterface.getFirst_name());
+                dto.setLastName(cInterface.getLast_name());
+                dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
+                dto.setMiddleName(cInterface.getMiddle_name());
+                dto.setRegionAddress(cInterface.getCitizen_address());
+                dto.setRegionId(cInterface.getRegion_id());
+                dto.setLocationInformation(cInterface.getLocation_information());
+                dto.setCauseOfEvent(cInterface.getCause_of_event());
+                dto.setEmployeeSummary(cInterface.getEmployee_summary());
+                dto.setPlaceOfImport(cInterface.getPlace_of_import());
+                list.add(dto);
+            }
+        }
+        return list;
+    }
+
+
 
     @Transactional(readOnly = true)
     public Integer getTotal(FilterForm filterForm) {
@@ -91,7 +131,7 @@ public class CitizenService {
         entity.forCreate();
         if (optCategory.isPresent()) {
             BeanUtils.copyProperties(dto, entity, "birthDate");
-            entity.setBirtDate(DateUtils.parseDate(dto.getBirtDate(), DateUtil.PATTERN14));
+            entity.setBirthDate(DateUtils.parseDate(dto.getBirthDate(), DateUtil.PATTERN14));
             entity.setCategoryId(optCategory.get().getId());
             entity.setRegionId(dto.getRegionId());
 
@@ -121,7 +161,7 @@ public class CitizenService {
         return myWorkDone.stream().map(e -> {
             IIOCitizensDto dto = new IIOCitizensDto();
             BeanUtils.copyProperties(e, dto,"birtDate");
-            dto.setBirtDate(e.getBirtDate().toString());
+            dto.setBirthDate(e.getBirthDate().toString());
             dto.setRegionId(regionRepository.findById(e.getRegionId()).orElse(new RegionEntity()).getId());
             dto.setCategory(categoryRepository.findById(e.getCategoryId()).orElse(new CategoryEntity()).getName());
             return dto;

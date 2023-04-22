@@ -19,7 +19,7 @@ public class RegionController {
     }
 
     @GetMapping("/get/{id}")
-    public HttpResponse<Object> getRegionById(@RequestParam("id") Long regionId){
+    public HttpResponse<Object> getRegionById(@PathVariable("id") Long regionId){
         HttpResponse<Object> response = HttpResponse.build(false);
         try{
             RegionDto regionDto = regionService.getRegionById(regionId);

@@ -2,7 +2,6 @@ package uz.internal_affairs.dto.citizen_cotegory;
 
 import lombok.*;
 import uz.internal_affairs.dto.FileDto;
-import uz.internal_affairs.entity.CitizenEntity;
 
 @Getter
 @Setter
@@ -10,7 +9,7 @@ import uz.internal_affairs.entity.CitizenEntity;
 @AllArgsConstructor
 @Builder
 public class IIOCitizensDto extends BaseCitizenDto {
-    private String birtDate;            // pattern = dd.mm.yyyy
+    private String birthDate;            // pattern = dd.mm.yyyy
 
     private Long regionId;
 
@@ -30,7 +29,6 @@ public class IIOCitizensDto extends BaseCitizenDto {
 
     private String placeOfImport;
 
-
-
+    private String regionAddress;
 
 }
