@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = TableNames.DEPARTMENT_REGION)
 public class RegionEntity  extends BaseServerModifierEntity {
-    @Column(name = "regionId")
-    private Long regionId;
 
     @Column(name = "name")
     private String name;
@@ -29,8 +27,8 @@ public class RegionEntity  extends BaseServerModifierEntity {
     @Column(name = "parentId")
     private Long parentId;
 
-    @OneToMany
-    @JoinColumn(name = "parentId", referencedColumnName = "regionId")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parentId", referencedColumnName = "id")
     List<RegionEntity> children = new ArrayList<>();
 
     public RegionDto getDto() {

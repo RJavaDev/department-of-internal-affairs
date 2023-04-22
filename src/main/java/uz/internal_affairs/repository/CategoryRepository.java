@@ -5,7 +5,7 @@ import uz.internal_affairs.entity.CategoryEntity;
 
 import java.util.Optional;
 
-public interface CategoryRepository extends JpaRepository<CategoryEntity,Integer> {
+public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
       Optional<CategoryEntity>findByName(String name);
 
 }

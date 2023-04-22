@@ -19,7 +19,7 @@ import java.util.Date;
 public class CitizenEntity extends BaseCitizenEntity {
 
     private Date birtDate;
-    private String regionId;
+    private Long regionId;
     private String neighborhoodId;
     private String locationInformation;//joyi haqida
 

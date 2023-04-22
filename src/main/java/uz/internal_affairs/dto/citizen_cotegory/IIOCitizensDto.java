@@ -12,16 +12,8 @@ import uz.internal_affairs.entity.CitizenEntity;
 public class IIOCitizensDto extends BaseCitizenDto {
     private String birtDate;            // pattern = dd.mm.yyyy
 
-//    private Long parentRegionId;
-//
-//    private String parentRegionName;            // tuman
-//
-//    private Long childRegionId;
-//
-//    private String childRegionName;         // mahalla
+    private Long regionId;
 
-    private String regionId;
-    private String neighborhoodId;
     private String locationInformation;     // joy haqida
 
     private FileDto fingerprintFile;

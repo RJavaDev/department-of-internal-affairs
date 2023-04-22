@@ -21,6 +21,7 @@ import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.entity.CategoryEntity;
 import uz.internal_affairs.entity.CitizenEntity;
+import uz.internal_affairs.entity.RegionEntity;
 import uz.internal_affairs.entity.UserEntity;
 import uz.internal_affairs.repository.CategoryRepository;
 import uz.internal_affairs.repository.CitizenRepository;
@@ -92,6 +93,8 @@ public class CitizenService {
             BeanUtils.copyProperties(dto, entity, "birthDate");
             entity.setBirtDate(DateUtils.parseDate(dto.getBirtDate(), DateUtil.PATTERN14));
             entity.setCategoryId(optCategory.get().getId());
+            entity.setRegionId(dto.getRegionId());
+
             UserEntity user = userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Not found!"));
             if (dto.getId() != null) {
                 entity.setUpdatedDate(LocalDateTime.now());
@@ -119,9 +122,8 @@ public class CitizenService {
             IIOCitizensDto dto = new IIOCitizensDto();
             BeanUtils.copyProperties(e, dto,"birtDate");
             dto.setBirtDate(e.getBirtDate().toString());
-            dto.setRegionId(regionRepository.findById(Long.valueOf(e.getRegionId())).get().getName());
-            dto.setNeighborhoodId(regionRepository.findById(Long.valueOf(e.getNeighborhoodId())).get().getName());
-            dto.setCategory(categoryRepository.findById(Math.toIntExact(e.getCategoryId())).get().getName());
+            dto.setRegionId(regionRepository.findById(e.getRegionId()).orElse(new RegionEntity()).getId());
+            dto.setCategory(categoryRepository.findById(e.getCategoryId()).orElse(new CategoryEntity()).getName());
             return dto;
         }).collect(Collectors.toList());
 

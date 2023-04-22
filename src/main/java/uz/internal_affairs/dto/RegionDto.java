@@ -7,7 +7,7 @@ import java.util.*;
 
 @Data
 public class RegionDto extends BaseServerDto {
-    private Long id;
+    private String name;
 
     private List<RegionDto> children;
 }
