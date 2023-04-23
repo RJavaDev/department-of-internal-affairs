@@ -60,7 +60,9 @@ public class AuthenticationService {
             user.forCreate(userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(()-> new UsernameNotFoundException(" user name not found!")).getId());
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             user.setBirtDate(DateUtils.parseDate(userDto.getBirtDate(),DateUtil.PATTERN14));
-            user.setRole(userDto.getRole() == Role.ADMIN ? Role.ADMIN : Role.USER);        } catch (ParseException e) {
+            user.setRole(userDto.getRole() == Role.ADMIN ? Role.ADMIN : Role.USER);
+        }
+        catch (ParseException e) {
             throw new RuntimeException(e);
         }
 

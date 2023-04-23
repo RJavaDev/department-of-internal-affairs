@@ -85,6 +85,7 @@ public class CitizenService {
             if (filterMap.containsKey("category"))
                 category = MapUtils.getString(filterMap, "category");
         }
+
         Page<CitizenInterface> pageCitizens = citizenRepository.list(category, pageable);
         List<IIOCitizensDto> list = new ArrayList<>();
         if (!pageCitizens.isEmpty()) {
