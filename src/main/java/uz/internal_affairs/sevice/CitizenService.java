@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.internal_affairs.common.util.DateUtil;
 import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.constants.EntityStatus;
+import uz.internal_affairs.dto.citizen_cotegory.AllCitizenDto;
 import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
@@ -93,6 +94,8 @@ public class CitizenService {
                 IIOCitizensDto dto = new IIOCitizensDto();
                 dto.setId(cInterface.getId());
                 dto.setCreatedBy(cInterface.getCreated_by());
+//                dto.setStandUpPROF(cInterface.getStand_up_PROF());
+//                dto.setLocationInformationObject(cInterface.getLocation_information_object());
                 dto.setCategoryId(cInterface.getCategory_id());
                 dto.setPhoneNumber(cInterface.getPhone_number());
                 dto.setFirstName(cInterface.getFirst_name());
@@ -123,7 +126,7 @@ public class CitizenService {
         return citizenRepository.getTotal(category);
     }
 
-    public IIOCitizensDto saveCitizen(HttpServletRequest request, IIOCitizensDto dto) throws ParseException {
+    public AllCitizenDto saveCitizen(HttpServletRequest request, AllCitizenDto dto) throws ParseException {
         if (dto == null || StringUtils.isEmpty(dto.getCategory())) return null;
 
         Optional<CategoryEntity> optCategory = categoryRepository.findByName(dto.getCategory());
@@ -148,7 +151,7 @@ public class CitizenService {
             entity.setStatus(EntityStatus.CREATED);
             citizenRepository.save(entity);
         }
-        return entity.toIIOCitizenDto();
+        return entity.toAllCitizenDto();
     }
 
     @Transactional

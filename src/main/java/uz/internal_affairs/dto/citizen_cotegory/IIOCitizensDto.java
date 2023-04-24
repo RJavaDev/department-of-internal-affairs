@@ -9,26 +9,17 @@ import uz.internal_affairs.dto.FileDto;
 @AllArgsConstructor
 @Builder
 public class IIOCitizensDto extends BaseCitizenDto {
-    private String birthDate;            // pattern = dd.mm.yyyy
-
-    private Long regionId;
-
-    private String locationInformation;     // joy haqida
-
-    private FileDto fingerprintFile;
-
-    private FileDto imageDto;
-
-    private String  imageUrl;
-
-    private String  fingerprintUrl;
-
-    private String causeOfEvent;
-
-    private String employeeSummary;
-
-    private String placeOfImport;
-
+    private String birthDate;             // pattern = dd.mm.yyyy
+    private Long regionId;                // mahalla id
+    private String locationInformation;   // joy xaqida tuliq malumot
     private String regionAddress;
+    private FileDto fingerprintFile;      // barmoq izi
+    private FileDto imageDto;             // rasm
+    private String imageUrl;
+    private String fingerprintUrl;
+    private String causeOfEvent;          // Voqea sababi
+    private String employeeSummary;       // hodim Xulosasi
+    private String placeOfImport;         // olib kelingan joy
+
 
 }

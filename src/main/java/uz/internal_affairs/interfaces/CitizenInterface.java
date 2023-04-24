@@ -38,6 +38,9 @@ public interface CitizenInterface {
     String getHunting_weapon_model();
 
     String getLocation_information();
+    String getStand_up_PROF();
+    String getLocation_information_object();
+
 
     String getPlace_of_import();
 
