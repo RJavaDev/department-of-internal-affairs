@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.internal_affairs.constants.TableNames;
+import uz.internal_affairs.dto.citizen_cotegory.AllCitizenDto;
 import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.entity.base.BaseCitizenEntity;
 import java.util.Date;
@@ -18,26 +19,25 @@ import java.util.Date;
 @Table(name = TableNames.DEPARTMENT_CITIZEN)
 public class CitizenEntity extends BaseCitizenEntity {
 
-    private Date birthDate;
+    private Date birthDate;                    // tug'lgan sanasi
+    private String locationInformation;       // joy xaqida tuliq malumot
+    private String standUpPROF;               // Tekshirilga PROF Hisobda turuvchi Shaxs
+    private String locationInformationObject; // obekt manzili
+
+    private String placeOfImport;             //olib kelingan joy
+    @Column(columnDefinition="TEXT")
+    private String causeOfEvent;              //voqiya sababi(text)
+    @Column(columnDefinition="TEXT")
+    private String employeeSummary;           //Hodim Xulosasi(text)
+    @Column(columnDefinition="TEXT")
+    private String statement;                 //  tuzilgan bayonat (text)
+    private String huntingWeaponModel;        // qurol madeli
+    private String huntingWeaponCode;         // qurol raqami
+    @Column(name = "regionId", nullable = false)
     private Long regionId;
-
-    private String locationInformation;//joyi haqida
-
-    private String placeOfImport;//olib kelingan joy
-
-    @Column(columnDefinition="TEXT")
-    private String causeOfEvent;//voqiya sababi(text)
-
-    @Column(columnDefinition="TEXT")
-    private String employeeSummary; //Hodim Xulosasi(text)
-
-    @Column(columnDefinition="TEXT")
-    private String statement;//  tuzilgan bayonat (text)
-
-    private String huntingWeaponModel;// qurol madeli
-
-    private String huntingWeaponCode;// qurol raqami
-
+    @ManyToOne
+    @JoinColumn(name = "regionId", insertable = false, updatable = false)
+    private RegionEntity regionEntity;
     @Column(name = "categoryId", nullable = false)
     private Long categoryId;
     @ManyToOne
@@ -61,9 +61,9 @@ public class CitizenEntity extends BaseCitizenEntity {
      * ******************** CONVERT TO DTO ***********************
      * ***********************************************************/
 
-    public IIOCitizensDto toIIOCitizenDto(){
+    public AllCitizenDto toAllCitizenDto(){
 
-        return toDto(this, new IIOCitizensDto());
+        return toDto(this, new AllCitizenDto());
     }
 
 }
