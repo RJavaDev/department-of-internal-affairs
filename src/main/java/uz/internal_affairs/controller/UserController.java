@@ -10,7 +10,6 @@ import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.dto.UserScoreDto;
 import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.dto.response.HttpResponse;
-import uz.internal_affairs.entity.CitizenEntity;
 import uz.internal_affairs.sevice.CitizenService;
 import uz.internal_affairs.sevice.UserService;
 
@@ -41,6 +40,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "This method for get",description = "To get all users for admin")
     @GetMapping("/list")
     public HttpResponse<Object> getUserList() {
         HttpResponse<Object> response = HttpResponse.build(false);
@@ -55,6 +55,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "This method for get", description = "This method is used to get how many points the admin user has scored")
     @GetMapping("/info/{id}")
     public HttpResponse<Object> getUserInformation(@PathVariable Long id) {
         HttpResponse<Object> response = HttpResponse.build(false);
@@ -68,6 +69,7 @@ public class UserController {
         return response;
     }
 
+    @Operation(summary = "This method for update", description = "This method updates the user's data")
     @PostMapping("/update")
     public HttpResponse<Object> userUpdate(@RequestBody UserDto userDto) {
         HttpResponse<Object> response = new HttpResponse<>(true);
@@ -82,6 +84,7 @@ public class UserController {
         return response;
     }
 
+    @Operation(summary = "This method for get", description = "This method way to determine what the user has job done")
     @GetMapping("/my-work-done")
     public HttpResponse<Object> getWorkDone() {
         HttpResponse<Object> response = new HttpResponse<>(true);
@@ -96,6 +99,7 @@ public class UserController {
         return response;
     }
 
+    @Operation(summary = "This user for update", description = "This method is designed to delete a user by ID")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public HttpResponse<Object> userDelete(@PathVariable Long id) {
