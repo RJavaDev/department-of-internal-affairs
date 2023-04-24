@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.internal_affairs.common.util.SecurityUtils;
+import uz.internal_affairs.dto.citizen_cotegory.AllCitizenDto;
 import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
@@ -21,10 +22,10 @@ public class CitizenController {
     private CitizenService citizenService;
 
     @PostMapping("/save")
-    public HttpResponse<Object> saveCitizen(HttpServletRequest request, @RequestBody IIOCitizensDto dto){
+    public HttpResponse<Object> saveCitizen(HttpServletRequest request, @RequestBody AllCitizenDto dto){
         HttpResponse<Object> response = HttpResponse.build(false);
         try{
-            IIOCitizensDto savedCitizen = citizenService.saveCitizen(request, dto);
+            AllCitizenDto savedCitizen = citizenService.saveCitizen(request, dto);
             if(savedCitizen != null && savedCitizen.getId() != null){
                 response.code(HttpResponse.Status.OK).success(true).body(savedCitizen).message("IIOCitizen saved successfully!!!");
             }
