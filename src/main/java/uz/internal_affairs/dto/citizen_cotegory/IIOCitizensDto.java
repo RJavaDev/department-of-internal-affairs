@@ -22,4 +22,5 @@ public class IIOCitizensDto extends BaseCitizenDto {
     private String placeOfImport;         // olib kelingan joy
 
 
+
 }

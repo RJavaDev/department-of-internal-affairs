@@ -16,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.internal_affairs.common.util.DateUtil;
 import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.constants.EntityStatus;
-import uz.internal_affairs.dto.citizen_cotegory.BaseCitizenDto;
-import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
+import uz.internal_affairs.dto.citizen_cotegory.*;
 import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.entity.CategoryEntity;
@@ -36,6 +35,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static uz.internal_affairs.common.util.CategoryEnum.*;
+
 @Service("citizenService")
 @RequiredArgsConstructor
 public class CitizenService {
@@ -45,19 +46,13 @@ public class CitizenService {
     private final RegionRepository regionRepository;
 
 
-    public DataGrid<IIOCitizensDto> dataGrid(HttpServletRequest request, FilterForm filterForm) throws Exception {
-        DataGrid<IIOCitizensDto> dataGrid = new DataGrid<>();
+    public DataGrid<Object> dataGrid(HttpServletRequest request, FilterForm filterForm) throws Exception {
+        DataGrid<Object> dataGrid = new DataGrid<>();
         dataGrid.setRows(rows2(request, filterForm));
         dataGrid.setTotal(getTotal(filterForm));
         return dataGrid;
     }
 
-//    public DataGrid<? extends BaseCitizenDto> getCategoryDateRegion(HttpServletRequest request, FilterForm filterForm) throws Exception {
-//        DataGrid<? extends BaseCitizenDto> dataGrid = new DataGrid<>();
-//        dataGrid.setRowsCitizen(getCategoryDateRegionFilter(request, filterForm));
-//        dataGrid.setTotal(getTotal(filterForm));
-//        return dataGrid;
-//    }
 
     public List<IIOCitizensDto> rows(HttpServletRequest request, FilterForm filterForm) {
         Sort sort = orderSortField("id");
@@ -83,7 +78,7 @@ public class CitizenService {
         return list;
     }
 
-    public List<IIOCitizensDto> rows2(HttpServletRequest request, FilterForm filterForm) {
+    public List<Object> rows2(HttpServletRequest request, FilterForm filterForm) {
         Sort sort = orderSortField("id");
         Pageable pageable = pageable(sort, filterForm);
         Map<String, Object> filterMap = filterForm.getFilter();
@@ -95,28 +90,32 @@ public class CitizenService {
         }
 
         Page<CitizenInterface> pageCitizens = citizenRepository.list(category, pageable);
-        List<IIOCitizensDto> list = new ArrayList<>();
+
         if (!pageCitizens.isEmpty()) {
-            for (CitizenInterface cInterface : pageCitizens) {
-                IIOCitizensDto dto = new IIOCitizensDto();
-                dto.setId(cInterface.getId());
-                dto.setCreatedBy(cInterface.getCreated_by());
-                dto.setCategoryId(cInterface.getCategory_id());
-                dto.setPhoneNumber(cInterface.getPhone_number());
-                dto.setFirstName(cInterface.getFirst_name());
-                dto.setLastName(cInterface.getLast_name());
-                dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
-                dto.setMiddleName(cInterface.getMiddle_name());
-                dto.setRegionAddress(cInterface.getCitizen_address());
-                dto.setRegionId(cInterface.getRegion_id());
-                dto.setLocationInformation(cInterface.getLocation_information());
-                dto.setCauseOfEvent(cInterface.getCause_of_event());
-                dto.setEmployeeSummary(cInterface.getEmployee_summary());
-                dto.setPlaceOfImport(cInterface.getPlace_of_import());
-                list.add(dto);
+            if (category != null) {
+                if (category.equals(IIO_CITIZEN.name())) {
+                    return Collections.singletonList(interfaceToIIOCitizenDto(pageCitizens));
+                } else if (category.equals(PROF_CITIZEN.name())) {
+                    return Collections.singletonList(interfaceToPROFCitizenDto(pageCitizens));
+                } else if (category.equals(STATEMENT.name())) {
+                    return Collections.singletonList(interfaceToStatementCitizenDto(pageCitizens));
+                } else if (category.equals(CAUGHT_WANTED_CITIZEN.name())) {
+                    return Collections.singletonList(interfaceToCaughtWantedCitizenDto(pageCitizens));
+                } else if (category.equals(CAUGHT_LOST_CITIZEN.name())) {
+                    return Collections.singletonList(interfaceToCaughtLostCitizen(pageCitizens));
+                } else if (category.equals(TOTAL_CHECKED_OBJECT_GUARDS.name())) {
+                    return Collections.singletonList(entityToTotalGuardsCitizenDto(pageCitizens));
+                } else if (category.equals(CHECKED_HUNTING_WEAPONS.name())) {
+                    return Collections.singletonList(interfaceToHuntingWeaponsCitizenDto(pageCitizens));
+                }
+            } else {
+                return Collections.singletonList(entityToAllCitizenDto(pageCitizens));
             }
         }
-        return list;
+
+
+
+        return null;
     }
 
     public List<? extends BaseCitizenDto> getCategoryDateRegionFilter(HttpServletRequest request, FilterForm filterForm) {
@@ -157,34 +156,195 @@ public class CitizenService {
         }
 
         Page<CitizenInterface> pageCitizens = citizenRepository.getCategoryDateRegionFilter(categoryId, regionId, startDate, endDate, pageable);
-        List<IIOCitizensDto> list = new ArrayList<>();
 
         if (!pageCitizens.isEmpty()) {
-//            switch (categoryId){
-//                case 1->{
-//
-//                }
-//            }
-            for (CitizenInterface cInterface : pageCitizens) {
-                IIOCitizensDto dto = new IIOCitizensDto();
-                dto.setId(cInterface.getId());
-                dto.setCreatedBy(cInterface.getCreated_by());
-                dto.setCategoryId(cInterface.getCategory_id());
-                dto.setPhoneNumber(cInterface.getPhone_number());
-                dto.setFirstName(cInterface.getFirst_name());
-                dto.setLastName(cInterface.getLast_name());
-                dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
-                dto.setMiddleName(cInterface.getMiddle_name());
-                dto.setRegionAddress(cInterface.getCitizen_address());
-                dto.setRegionId(cInterface.getRegion_id());
-                dto.setLocationInformation(cInterface.getLocation_information());
-                dto.setCauseOfEvent(cInterface.getCause_of_event());
-                dto.setEmployeeSummary(cInterface.getEmployee_summary());
-                dto.setPlaceOfImport(cInterface.getPlace_of_import());
-                list.add(dto);
+            if (categoryId != null) {
+                if (categoryId.equals(IIO_CITIZEN.getValue())) {
+                    return interfaceToIIOCitizenDto(pageCitizens);
+                } else if (categoryId.equals(PROF_CITIZEN.getValue())) {
+                    return interfaceToPROFCitizenDto(pageCitizens);
+                } else if (categoryId.equals(STATEMENT.getValue())) {
+                    return interfaceToStatementCitizenDto(pageCitizens);
+                } else if (categoryId.equals(CAUGHT_WANTED_CITIZEN.getValue())) {
+                    return interfaceToCaughtWantedCitizenDto(pageCitizens);
+                } else if (categoryId.equals(CAUGHT_LOST_CITIZEN.getValue())) {
+                    return interfaceToCaughtLostCitizen(pageCitizens);
+                } else if (categoryId.equals(TOTAL_CHECKED_OBJECT_GUARDS.getValue())) {
+                    return entityToTotalGuardsCitizenDto(pageCitizens);
+                }
+            } else {
+                entityToAllCitizenDto(pageCitizens);
             }
+
+        }
+        return null;
+    }
+
+    private List<AllCitizenDto> entityToAllCitizenDto(Page<CitizenInterface> pageCitizens) {
+        List<AllCitizenDto> list = new ArrayList<>();
+        for (CitizenInterface cInterface : pageCitizens) {
+            AllCitizenDto dto = new AllCitizenDto();
+            dto.setId(cInterface.getId());
+            dto.setCreatedBy(cInterface.getCreated_by());
+            dto.setCategoryId(cInterface.getCategory_id());
+            dto.setPhoneNumber(cInterface.getPhone_number());
+            dto.setFirstName(cInterface.getFirst_name());
+            dto.setLastName(cInterface.getLast_name());
+            dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
+            dto.setMiddleName(cInterface.getMiddle_name());
+            dto.setRegionAddress(cInterface.getCitizen_address());
+            dto.setRegionId(cInterface.getRegion_id());
+            dto.setLocationInformation(cInterface.getLocation_information());
+            dto.setCauseOfEvent(cInterface.getCause_of_event());
+            dto.setEmployeeSummary(cInterface.getEmployee_summary());
+            dto.setPlaceOfImport(cInterface.getPlace_of_import());
+            list.add(dto);
         }
         return list;
+    }
+
+    private List<TotalGuardsCitizenDto> entityToTotalGuardsCitizenDto(Page<CitizenInterface> pageCitizens) {
+        List<TotalGuardsCitizenDto> citizenList = new ArrayList<>();
+        for (CitizenInterface citizen : pageCitizens) {
+            TotalGuardsCitizenDto dto = new TotalGuardsCitizenDto();
+            dto.setId(citizen.getId());
+            dto.setFirstName(citizen.getFirst_name());
+            dto.setLastName(citizen.getLast_name());
+            dto.setMiddleName(citizen.getMiddle_name());
+            dto.setPhoneNumber(citizen.getPhone_number());
+            dto.setCategoryId(citizen.getCategory_id());
+            dto.setRegionId(citizen.getRegion_id());
+            dto.setCategory(TOTAL_CHECKED_OBJECT_GUARDS.name());
+            dto.setLocationInformation(citizen.getLocation_information());
+            dto.setRegionAddress(citizen.getCitizen_address());
+            dto.setLocationInformationObject(citizen.getLocation_information_object());
+            citizenList.add(dto);
+        }
+        return citizenList;
+    }
+
+    private List<CaughtLostCitizenDto> interfaceToCaughtLostCitizen(Page<CitizenInterface> pageCitizens) {
+        List<CaughtLostCitizenDto> citizenList = new ArrayList<>();
+        for (CitizenInterface citizen : pageCitizens) {
+            CaughtLostCitizenDto dto = new CaughtLostCitizenDto();
+            dto.setId(citizen.getId());
+            dto.setFirstName(citizen.getFirst_name());
+            dto.setLastName(citizen.getLast_name());
+            dto.setMiddleName(citizen.getMiddle_name());
+            dto.setPhoneNumber(citizen.getPhone_number());
+            dto.setCategoryId(citizen.getCategory_id());
+            dto.setRegionId(citizen.getRegion_id());
+            dto.setLocationInformation(citizen.getLocation_information());
+            dto.setEmployeeSummary(citizen.getEmployee_summary());
+            citizenList.add(dto);
+        }
+        return citizenList;
+    }
+
+    private List<CaughtWantedCitizenDto> interfaceToCaughtWantedCitizenDto(Page<CitizenInterface> pageCitizens) {
+        List<CaughtWantedCitizenDto> caughtWantedCitizenDtoList = new ArrayList<>();
+        for (CitizenInterface citizen : pageCitizens) {
+            CaughtWantedCitizenDto dto = new CaughtWantedCitizenDto();
+            dto.setId(citizen.getId());
+            dto.setFirstName(citizen.getFirst_name());
+            dto.setLastName(citizen.getLast_name());
+            dto.setMiddleName(citizen.getMiddle_name());
+            dto.setPhoneNumber(citizen.getPhone_number());
+            dto.setCategoryId(citizen.getCategory_id());
+            dto.setCategory(CAUGHT_WANTED_CITIZEN.name());
+            dto.setRegionId(citizen.getRegion_id());
+            dto.setRegionAddress(citizen.getCitizen_address());
+            dto.setLocationInformation(citizen.getLocation_information());
+            dto.setEmployeeSummary(citizen.getEmployee_summary());
+            caughtWantedCitizenDtoList.add(dto);
+        }
+        return caughtWantedCitizenDtoList;
+    }
+
+    private List<StatementCitizenDto> interfaceToStatementCitizenDto(Page<CitizenInterface> pageCitizens) {
+        List<StatementCitizenDto> citizenDtoList = new ArrayList<>();
+        for (CitizenInterface citizen : pageCitizens) {
+            StatementCitizenDto dto = new StatementCitizenDto();
+            dto.setRegionId(citizen.getId());
+            dto.setLastName(citizen.getLast_name());
+            dto.setFirstName(citizen.getFirst_name());
+            dto.setMiddleName(citizen.getMiddle_name());
+            dto.setPhoneNumber(citizen.getPhone_number());
+            dto.setCategory(STATEMENT.name());
+            dto.setBirthDate(citizen.getBirth_date().toString());
+            dto.setLocationInformation(citizen.getLocation_information());
+            dto.setRegionAddress(citizen.getLocation_information());
+            dto.setEmployeeSummary(citizen.getEmployee_summary());
+            dto.setStatement(citizen.getStatement());
+            dto.setRegionAddress(citizen.getCitizen_address());
+            dto.setPlaceOfImport(citizen.getPlace_of_import());
+            citizenDtoList.add(dto);
+        }
+        return citizenDtoList;
+    }
+
+    private List<PROFCitizenDto> interfaceToPROFCitizenDto(Page<CitizenInterface> pageCitizens) {
+        List<PROFCitizenDto> profCitizenDtoList = new ArrayList<>();
+        for (CitizenInterface cInterface : pageCitizens) {
+            PROFCitizenDto dto = new PROFCitizenDto();
+            dto.setLastName(cInterface.getLast_name());
+            dto.setFirstName(cInterface.getFirst_name());
+            dto.setMiddleName(cInterface.getMiddle_name());
+            dto.setId(cInterface.getId());
+            dto.setCategory(PROF_CITIZEN.name());
+            dto.setCategoryId(cInterface.getCategory_id());
+            dto.setCreatedDate(cInterface.getCreated_date());
+            dto.setLocationInformation(cInterface.getLocation_information());
+            dto.setRegionAddress(cInterface.getCitizen_address());
+            dto.setStandUpPROF(cInterface.getStand_upprof());
+            dto.setEmployeeSummary(cInterface.getEmployee_summary());
+            dto.setPhoneNumber(cInterface.getPhone_number());
+            profCitizenDtoList.add(dto);
+        }
+        return profCitizenDtoList;
+    }
+
+    private List<IIOCitizensDto> interfaceToIIOCitizenDto(Page<CitizenInterface> pageCitizens) {
+        List<IIOCitizensDto> iIOCitizenList = new ArrayList<>();
+        for (CitizenInterface cInterface : pageCitizens) {
+            IIOCitizensDto dto = new IIOCitizensDto();
+            dto.setId(cInterface.getId());
+            dto.setCreatedBy(cInterface.getCreated_by());
+            dto.setCategoryId(cInterface.getCategory_id());
+            dto.setPhoneNumber(cInterface.getPhone_number());
+            dto.setFirstName(cInterface.getFirst_name());
+            dto.setLastName(cInterface.getLast_name());
+            dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
+            dto.setCategory(IIO_CITIZEN.name());
+            dto.setMiddleName(cInterface.getMiddle_name());
+            dto.setRegionAddress(cInterface.getCitizen_address());
+            dto.setRegionId(cInterface.getRegion_id());
+            dto.setLocationInformation(cInterface.getLocation_information());
+            dto.setCauseOfEvent(cInterface.getCause_of_event());
+            dto.setEmployeeSummary(cInterface.getEmployee_summary());
+            dto.setPlaceOfImport(cInterface.getPlace_of_import());
+            iIOCitizenList.add(dto);
+        }
+        return iIOCitizenList;
+    }
+
+    private List<HuntingWeaponsCitizenDto> interfaceToHuntingWeaponsCitizenDto(Page<CitizenInterface> pageCitizens) {
+        List<HuntingWeaponsCitizenDto> citizenList = new ArrayList<>();
+        for (CitizenInterface citizen : pageCitizens) {
+            HuntingWeaponsCitizenDto dto = new HuntingWeaponsCitizenDto();
+            dto.setId(citizen.getId());
+            dto.setFirstName(citizen.getFirst_name());
+            dto.setLastName(citizen.getLast_name());
+            dto.setMiddleName(citizen.getMiddle_name());
+            dto.setPhoneNumber(citizen.getPhone_number());
+            dto.setCategoryId(citizen.getCategory_id());
+            dto.setCategory(CHECKED_HUNTING_WEAPONS.name());
+            dto.setHuntingWeaponModel(citizen.getHunting_weapon_model());
+            dto.setHuntingWeaponCode(citizen.getHunting_weapon_code());
+            dto.setEmployeeSummary(citizen.getEmployee_summary());
+            citizenList.add(dto);
+        }
+        return citizenList;
     }
 
 

@@ -46,7 +46,7 @@ public class CitizenController {
     public HttpResponse<Object> dataGrid(HttpServletRequest request, @RequestBody FilterForm filter){
         HttpResponse<Object> response = HttpResponse.build(false);
         try{
-            DataGrid<IIOCitizensDto> datagrid = citizenService.dataGrid(request, filter);
+            DataGrid<Object> datagrid = citizenService.dataGrid(request, filter);
             response.code(HttpResponse.Status.OK).success(true).body(datagrid);
         }
         catch (Exception e){
