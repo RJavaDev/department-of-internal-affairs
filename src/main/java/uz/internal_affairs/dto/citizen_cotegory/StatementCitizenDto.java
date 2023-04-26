@@ -1,11 +1,15 @@
 package uz.internal_affairs.dto.citizen_cotegory;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.internal_affairs.dto.FileDto;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class StatementCitizenDto extends BaseCitizenDto{  //bayonat
     private Long regionId;                // mahalla id
     private String locationInformation;   // joy xaqida tuliq malumot

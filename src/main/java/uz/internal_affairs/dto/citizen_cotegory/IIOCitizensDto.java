@@ -7,7 +7,7 @@ import uz.internal_affairs.dto.FileDto;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+
 public class IIOCitizensDto extends BaseCitizenDto {
     private String birthDate;             // pattern = dd.mm.yyyy
     private Long regionId;                // mahalla id

@@ -17,7 +17,6 @@ import uz.internal_affairs.sevice.CitizenService;
 @RequestMapping("/api/v1/citizen")
 @Tag(name = "Citizen Controller", description = "This Controller for user")
 public class CitizenController {
-
     @Autowired
     private CitizenService citizenService;
 

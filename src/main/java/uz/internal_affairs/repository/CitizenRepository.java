@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import uz.internal_affairs.entity.CitizenEntity;
 import uz.internal_affairs.interfaces.CitizenInterface;
 
@@ -55,11 +56,15 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
     Integer deleteCitizen(@Param("id") Long id);
 
 
-    @Query(value = "SELECT dc.* FROM d_citizen dc\n" +
-            "     INNER JOIN d_user du ON du.username = :myUsername \n" +
-            "    AND  du.id = dc.user_id\n" +
-            "    AND dc.created_date >= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent')\n" +
-            "    AND dc.created_date <= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent' + INTERVAL '1 month')\n" +
-            "WHERE dc.status <> 'DELETE'",nativeQuery = true)
-    List<CitizenEntity> getMyWorkDone(@Param("myUsername") String myUsername);
+//
+
+    @Query(value = "SELECT d_cit.*, d_parrent.name AS region_name, d_chaild.name AS neighborhood_name\n" +
+            "FROM d_citizen d_cit\n" +
+            "\n" +
+            "         INNER JOIN d_region d_chaild ON d_cit.user_id = :userId AND  d_cit.region_id = d_chaild.id\n" +
+            "         INNER JOIN d_region d_parrent ON d_chaild.parent_id = d_parrent.id\n" +
+            "    AND d_cit.created_date >= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent')\n" +
+            "    AND d_cit.created_date <= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent' + INTERVAL '1 month')\n" +
+            "WHERE d_cit.status <> 'DELETE'",nativeQuery = true)
+    Page<CitizenInterface> getUserJobs(@Param("userId")Long userId, Pageable pageable);
 }

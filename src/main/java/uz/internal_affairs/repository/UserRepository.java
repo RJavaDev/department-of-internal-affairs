@@ -55,4 +55,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Modifying
     @Query(value = "UPDATE d_user SET status = 'DELETED' WHERE id = :userId", nativeQuery = true)
     Integer userDelete(@Param("userId") Long userId);
+
+
 }

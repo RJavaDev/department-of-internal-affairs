@@ -1,11 +1,12 @@
 package uz.internal_affairs.dto.citizen_cotegory;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import uz.internal_affairs.dto.base.BaseServerModifierDto;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BaseCitizenDto extends BaseServerModifierDto {
 
     private String firstName;

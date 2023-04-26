@@ -9,7 +9,9 @@ import uz.internal_affairs.dto.FileDto;
 public class AllCitizenDto extends BaseCitizenDto {
     private Long regionId;                     // mahalla id
     private String locationInformation;        // joy xaqida tuliq malumot
-    private String regionAddress;
+
+    private String regionName;                // tuman
+    private String neighborhoodName;          //mahalla
     private String birthDate;                 // tug'lgan sanasi pattern = dd.mm.yyyy
     private String standUpPROF;               // Tekshirilga PROF Hisobda turuvchi Shaxs
     private String locationInformationObject; // obekt manzili

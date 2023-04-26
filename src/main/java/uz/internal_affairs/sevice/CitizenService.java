@@ -22,17 +22,15 @@ import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.entity.CategoryEntity;
 import uz.internal_affairs.entity.CitizenEntity;
-import uz.internal_affairs.entity.RegionEntity;
 import uz.internal_affairs.entity.UserEntity;
 import uz.internal_affairs.interfaces.CitizenInterface;
 import uz.internal_affairs.repository.CategoryRepository;
 import uz.internal_affairs.repository.CitizenRepository;
-import uz.internal_affairs.repository.RegionRepository;
 import uz.internal_affairs.repository.UserRepository;
 
-import java.util.*;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.*;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,7 +40,6 @@ public class CitizenService {
     private final CitizenRepository citizenRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
-    private final RegionRepository regionRepository;
 
 
     public DataGrid<IIOCitizensDto> dataGrid(HttpServletRequest request, FilterForm filterForm) throws Exception {
@@ -51,6 +48,13 @@ public class CitizenService {
         dataGrid.setTotal(getTotal(filterForm));
         return dataGrid;
     }
+    public DataGrid<AllCitizenDto> userJobs(Long userId,HttpServletRequest request, FilterForm filterForm) throws Exception {
+        DataGrid<AllCitizenDto> dataGrid = new DataGrid<>();
+        dataGrid.setRows(getWorkDone(userId,request, filterForm));
+        dataGrid.setTotal(getTotal(filterForm));
+        return dataGrid;
+    }
+
 
     public List<IIOCitizensDto> rows(HttpServletRequest request, FilterForm filterForm) {
         Sort sort = Sort.by(Sort.Order.by("id"));
@@ -160,16 +164,33 @@ public class CitizenService {
         return numAffectedRows > 0;
     }
 
-    public List<IIOCitizensDto> getWorkDone(String username) {
-        List<CitizenEntity> myWorkDone = citizenRepository.getMyWorkDone(username);
-        return myWorkDone.stream().map(e -> {
-            IIOCitizensDto dto = new IIOCitizensDto();
-            BeanUtils.copyProperties(e, dto,"birtDate");
-            dto.setBirthDate(e.getBirthDate().toString());
-            dto.setRegionId(regionRepository.findById(e.getRegionId()).orElse(new RegionEntity()).getId());
-            dto.setCategory(categoryRepository.findById(e.getCategoryId()).orElse(new CategoryEntity()).getName());
-            return dto;
-        }).collect(Collectors.toList());
+    public List<AllCitizenDto> getWorkDone(Long userId,HttpServletRequest request, FilterForm filterForm) {
+        List<AllCitizenDto> getUserJobList = new ArrayList<>();
+        Sort sort = Sort.by(Sort.Order.by("id"));
+        Pageable pageable = PageRequest.of(filterForm.getStart() / filterForm.getLength(), filterForm.getLength(), sort);
+        Page<CitizenInterface> pageCitizens = citizenRepository.getUserJobs(userId,pageable);
 
+        if(!pageCitizens.isEmpty()){
+            for(CitizenInterface cInterface : pageCitizens){
+                AllCitizenDto dto = new AllCitizenDto();
+                dto.setId(cInterface.getId());
+                dto.setCreatedBy(cInterface.getCreated_by());
+                dto.setCategoryId(cInterface.getCategory_id());
+                dto.setPhoneNumber(cInterface.getPhone_number());
+                dto.setFirstName(cInterface.getFirst_name());
+                dto.setLastName(cInterface.getLast_name());
+                dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
+                dto.setMiddleName(cInterface.getMiddle_name());
+                dto.setRegionName(cInterface.getRegion_name());
+                dto.setNeighborhoodName(cInterface.getNeighborhood_name());
+                dto.setRegionId(cInterface.getRegion_id());
+                dto.setLocationInformation(cInterface.getLocation_information());
+                dto.setCauseOfEvent(cInterface.getCause_of_event());
+                dto.setEmployeeSummary(cInterface.getEmployee_summary());
+                dto.setPlaceOfImport(cInterface.getPlace_of_import());
+                getUserJobList.add(dto);
+            }
+        }
+        return getUserJobList;
     }
 }

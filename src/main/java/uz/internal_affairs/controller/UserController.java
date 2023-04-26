@@ -2,15 +2,22 @@ package uz.internal_affairs.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.dto.UserScoreDto;
+import uz.internal_affairs.dto.citizen_cotegory.AllCitizenDto;
 import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
+import uz.internal_affairs.dto.response.DataGrid;
+import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.dto.response.HttpResponse;
 import uz.internal_affairs.entity.CitizenEntity;
+import uz.internal_affairs.entity.UserEntity;
+import uz.internal_affairs.repository.UserRepository;
+import uz.internal_affairs.sevice.CategoryService;
 import uz.internal_affairs.sevice.CitizenService;
 import uz.internal_affairs.sevice.UserService;
 
@@ -24,6 +31,7 @@ public class UserController {
 
     private final UserService userService;
     private final CitizenService citizenService;
+    private final UserRepository userRepository;
 
     @GetMapping("/get-user-score")
     @Operation(summary = "Method of user score",
@@ -45,8 +53,8 @@ public class UserController {
     public HttpResponse<Object> getUserList() {
         HttpResponse<Object> response = HttpResponse.build(false);
         try {
-            List<UserDto> userAll = userService.getUserAll();
-            response.code(HttpResponse.Status.OK).success(true).body(userAll).message("successfully!!!");
+
+            response.code(HttpResponse.Status.OK).success(true).body(userService.getUserAll()).message("successfully!!!");
         } catch (Exception e) {
             e.printStackTrace();
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
@@ -74,7 +82,7 @@ public class UserController {
 
         try {
             if (userService.updateUser(userDto)) {
-                return response.code(HttpResponse.Status.OK).success(true);
+                return response.code(HttpResponse.Status.OK).body(true).success(true);
             }
         } catch (Exception ex) {
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
@@ -82,13 +90,33 @@ public class UserController {
         return response;
     }
 
+    /**
+     * admin tomondan userni bir oylig qigan ishini kuradi kuradi
+     **/
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/user-work-done/{id}")
+    public HttpResponse<Object> getUserWorkDone(@PathVariable Long id, HttpServletRequest request, @RequestBody FilterForm filterForm) {
+        HttpResponse<Object> response = HttpResponse.build(false);
+        try {
+            List<AllCitizenDto> workDone = citizenService.getWorkDone(id, request, filterForm);
+            response.code(HttpResponse.Status.OK).success(true).body(workDone).message("successfully!!!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
+
+    /**
+     * user uzini bir oylig qilgan ishlarini kuradi
+     **/
     @GetMapping("/my-work-done")
-    public HttpResponse<Object> getWorkDone() {
+    public HttpResponse<Object> getWorkDone(HttpServletRequest request, @RequestBody FilterForm filterForm) {
         HttpResponse<Object> response = new HttpResponse<>(true);
         try {
-            String username = SecurityUtils.getUsername();
-            List<IIOCitizensDto> workDone = citizenService.getWorkDone(username);
-            response.code(HttpResponse.Status.OK).success(true).body(workDone).message("successfully!!!");
+            Long currentUserId = userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow().getId();
+            DataGrid<AllCitizenDto> allCitizenDtoDataGrid = citizenService.userJobs(currentUserId, request, filterForm);
+            response.code(HttpResponse.Status.OK).success(true).body(allCitizenDtoDataGrid).message("successfully!!!");
         } catch (Exception e) {
             e.printStackTrace();
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
