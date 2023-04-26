@@ -46,8 +46,8 @@ public class CitizenController {
     public HttpResponse<Object> dataGrid(HttpServletRequest request, @RequestBody FilterForm filter){
         HttpResponse<Object> response = HttpResponse.build(false);
         try{
-            DataGrid<Object> datagrid = citizenService.dataGrid(request, filter);
-            response.code(HttpResponse.Status.OK).success(true).body(datagrid);
+           ;
+            response.code(HttpResponse.Status.OK).success(true).body(citizenService.rows2(request,filter));
         }
         catch (Exception e){
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
