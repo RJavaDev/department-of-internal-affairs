@@ -1,5 +1,7 @@
 package uz.internal_affairs.dto.response;
 
+import uz.internal_affairs.dto.citizen_cotegory.BaseCitizenDto;
+
 import java.util.List;
 
 public class DataGrid<T> {
@@ -21,4 +23,9 @@ public class DataGrid<T> {
     public void setRows(List<T> rows){
         this.rows = rows;
     }
+    public void setRowsCitizen(List<? extends BaseCitizenDto> rowsCitizen){
+    }
+
+//    public void setRows(List<? extends BaseCitizenDto> categoryDateRegionFilter) {
+//    }
 }
