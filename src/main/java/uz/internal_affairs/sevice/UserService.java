@@ -46,7 +46,8 @@ public class UserService {
     }
 
     public UserScoreDto getUserScore() {
-        UserEntity currentUser = userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Not found!"));
+        UserEntity currentUser = userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(
+                () -> new UsernameNotFoundException("Not found!"));
         UserScoreDto userScoreDto = new UserScoreDto();
         userScoreDto.setUserScoreDay(userRepository.getUserScoreToday(currentUser.getId()));
         userScoreDto.setUserScoreMonth(userRepository.getUserScoreMonth(currentUser.getId()));

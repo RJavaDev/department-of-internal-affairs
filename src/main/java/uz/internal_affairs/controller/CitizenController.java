@@ -1,30 +1,33 @@
 package uz.internal_affairs.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import uz.internal_affairs.common.util.SecurityUtils;
-import uz.internal_affairs.dto.citizen_cotegory.AllCitizenDto;
+import uz.internal_affairs.dto.citizen_cotegory.BaseCitizenDto;
 import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.dto.response.HttpResponse;
 import uz.internal_affairs.sevice.CitizenService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/citizen")
-@Tag(name = "Citizen Controller", description = "This Controller for user")
+@Tag(name = "Citizen Controller", description = "This Controller for citizen")
+@RequiredArgsConstructor
 public class CitizenController {
-    @Autowired
-    private CitizenService citizenService;
 
+    private final CitizenService citizenService;
+
+    @Operation(summary = "Method for add post",description = "This method is for adding citizens")
     @PostMapping("/save")
-    public HttpResponse<Object> saveCitizen(HttpServletRequest request, @RequestBody AllCitizenDto dto){
+    public HttpResponse<Object> saveCitizen(HttpServletRequest request, @RequestBody IIOCitizensDto dto){
         HttpResponse<Object> response = HttpResponse.build(false);
         try{
-            AllCitizenDto savedCitizen = citizenService.saveCitizen(request, dto);
+            IIOCitizensDto savedCitizen = citizenService.saveCitizen(request, dto);
             if(savedCitizen != null && savedCitizen.getId() != null){
                 response.code(HttpResponse.Status.OK).success(true).body(savedCitizen).message("IIOCitizen saved successfully!!!");
             }
@@ -38,12 +41,13 @@ public class CitizenController {
         return response;
     }
 
+    @Operation(summary = "Method for get post", description = "This method is designed to filter citizens by category\n")
     @PostMapping("/data")
     public HttpResponse<Object> dataGrid(HttpServletRequest request, @RequestBody FilterForm filter){
         HttpResponse<Object> response = HttpResponse.build(false);
         try{
-            DataGrid<IIOCitizensDto> datagrid = citizenService.dataGrid(request, filter);
-            response.code(HttpResponse.Status.OK).success(true).body(datagrid);
+           ;
+            response.code(HttpResponse.Status.OK).success(true).body(citizenService.rows2(request,filter));
         }
         catch (Exception e){
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
@@ -51,6 +55,21 @@ public class CitizenController {
         return response;
     }
 
+    @Operation(summary = "Method for get post", description = "This method is for filtering citizens by category, entered time and place")
+    @PostMapping("/CDF-filter")
+    public HttpResponse<Object> getCategoryDateRegionFilter(HttpServletRequest request, @RequestBody FilterForm filter){
+        HttpResponse<Object> response = HttpResponse.build(false);
+        try{
+            List<? extends BaseCitizenDto> data = citizenService.getCategoryDateRegionFilter(request, filter);
+            response.code(HttpResponse.Status.OK).success(true).body(data);
+        }
+        catch (Exception e){
+            response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
+
+    @Operation(summary = "This method citizen delete", description = "This method is intended for deletion by citizen ID")
     @DeleteMapping("/delete/{id}")
     public HttpResponse<Object> delete(@PathVariable("id") Long id){
         HttpResponse<Object> response = HttpResponse.build(false);

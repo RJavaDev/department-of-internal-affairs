@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import uz.internal_affairs.entity.CitizenEntity;
 import uz.internal_affairs.interfaces.CitizenInterface;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,4 +67,26 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
             "    AND d_cit.created_date <= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent' + INTERVAL '1 month')\n" +
             "WHERE d_cit.status <> 'DELETE'",nativeQuery = true)
     Page<CitizenInterface> getUserJobs(@Param("userId")Long userId, Pageable pageable);
+
+    @Query(value = "SELECT d_c.*,\n" +
+            "       (SELECT dr_parrent.name || ' ' || dr_chaild.name\n" +
+            "        FROM d_region dr_chaild\n" +
+            "                 INNER JOIN d_region dr_parrent\n" +
+            "                 ON d_c.region_id = dr_chaild.id\n" +
+            "                 AND dr_chaild.parent_id = dr_parrent.id) AS citizen_address\n" +
+            "FROM d_citizen d_c\n" +
+            "WHERE d_c.created_date BETWEEN\n" +
+            "    COALESCE(:startDate, CAST('1970-01-01 00:00:00' AS TIMESTAMP WITHOUT TIME ZONE))\n" +
+            "    AND COALESCE(:endDate, NOW())\n" +
+            "  AND (:categoryId IS NULL OR d_c.category_id = :categoryId)\n" +
+            "  AND (:regionId IS NULL OR d_c.region_id = :regionId)",nativeQuery = true)
+
+    Page<CitizenInterface> getCategoryDateRegionFilter(
+            @Param("categoryId") Long categoryId,
+            @Param("regionId") Long regionId,
+            @Param("startDate")Date startDate,
+            @Param("endDate") Date endDate,
+            Pageable pageable
+    );
+
 }

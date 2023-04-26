@@ -2,6 +2,7 @@ package uz.internal_affairs.interfaces;
 
 import uz.internal_affairs.constants.EntityStatus;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public interface CitizenInterface {
@@ -11,7 +12,7 @@ public interface CitizenInterface {
 
     Long getCreated_by();
 
-    Date getCreated_date();
+    LocalDateTime getCreated_date();
 
     Long getModified_by();
 
@@ -38,7 +39,7 @@ public interface CitizenInterface {
     String getHunting_weapon_model();
 
     String getLocation_information();
-    String getStand_up_PROF();
+    String getStand_upprof();
     String getLocation_information_object();
 
 
