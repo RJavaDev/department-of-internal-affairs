@@ -84,6 +84,7 @@ public class UserController {
         HttpResponse<Object> response = new HttpResponse<>(true);
 
         try {
+
             if (userService.updateUser(userDto)) {
                 return response.code(HttpResponse.Status.OK).body(true).success(true);
             }

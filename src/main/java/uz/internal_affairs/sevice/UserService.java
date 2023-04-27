@@ -76,8 +76,6 @@ public class UserService {
                 new UsernameNotFoundException("curren user username not found!")
         );
 
-//        if (!Objects.equals(userDto.getId(), user.getId())) return false;
-
         log.atInfo().log("!Обновление... пользователя");
         user.forUpdate();
         if (!StringUtils.isEmpty(userDto.getFirstname())) user.setFirstname(userDto.getFirstname());

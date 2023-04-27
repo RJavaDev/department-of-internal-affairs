@@ -12,7 +12,8 @@ import lombok.Setter;
 public class TotalGuardsCitizenDto extends BaseCitizenDto{ // jami tekshirilgan obekt qarovullar
     private Long regionId;                    // mahalla id
     private String locationInformation;       // joy xaqida tuliq malumot
-    private String regionAddress;
+    private String region_name;
+    private String neighborhood_name;
     private String locationInformationObject; // obekt manzili
 
 }

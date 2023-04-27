@@ -12,7 +12,8 @@ import lombok.Setter;
 public class PROFCitizenDto extends BaseCitizenDto { //  PROF Hisobda turuvchi Shaxslar
     private Long regionId;                // mahalla id
     private String locationInformation;   // joy xaqida tuliq malumot
-    private String regionAddress;
+    private String region_name;
+    private String neighborhood_name;
     private String standUpPROF;             // Tekshirilga PROF Hisobda turuvchi Shaxs
     private String employeeSummary;         //Hodim Xulosasi(text)
 

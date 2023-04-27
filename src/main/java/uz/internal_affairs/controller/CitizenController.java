@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import uz.internal_affairs.dto.citizen_cotegory.AllCitizenDto;
 import uz.internal_affairs.dto.citizen_cotegory.BaseCitizenDto;
 import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.dto.response.DataGrid;
@@ -24,10 +25,10 @@ public class CitizenController {
 
     @Operation(summary = "Method for add post",description = "This method is for adding citizens")
     @PostMapping("/save")
-    public HttpResponse<Object> saveCitizen(HttpServletRequest request, @RequestBody IIOCitizensDto dto){
+    public HttpResponse<Object> saveCitizen(HttpServletRequest request, @RequestBody AllCitizenDto dto){
         HttpResponse<Object> response = HttpResponse.build(false);
         try{
-            IIOCitizensDto savedCitizen = citizenService.saveCitizen(request, dto);
+            AllCitizenDto savedCitizen = citizenService.saveCitizen(request, dto);
             if(savedCitizen != null && savedCitizen.getId() != null){
                 response.code(HttpResponse.Status.OK).success(true).body(savedCitizen).message("IIOCitizen saved successfully!!!");
             }

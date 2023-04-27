@@ -11,7 +11,8 @@ public class CaughtLostCitizenDto extends BaseCitizenDto{ // Aniqlangan bedarakl
 
     private Long regionId;                // mahalla id
     private String locationInformation;   // joy xaqida tuliq malumot
-    private String regionAddress;
+    private String region_name;
+    private String neighborhood_name;
     private FileDto fingerprintFile;      // barmoq izi
     private FileDto imageDto;             // rasm
     private String imageUrl;

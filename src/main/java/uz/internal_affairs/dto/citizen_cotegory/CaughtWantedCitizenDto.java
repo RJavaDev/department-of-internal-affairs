@@ -14,12 +14,14 @@ public class CaughtWantedCitizenDto extends BaseCitizenDto{  // Ushlangan qidiru
 
     private Long regionId;                // mahalla id
     private String locationInformation;   // joy xaqida tuliq malumot
+    private String region_name;
+    private String neighborhood_name;
     private FileDto fingerprintFile;      // barmoq izi
     private FileDto imageDto;             // rasm
     private String imageUrl;
     private String fingerprintUrl;
     private String employeeSummary;       // hodim Xulosasi
-    private String regionAddress;
+
 
 
 

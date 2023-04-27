@@ -200,7 +200,8 @@ public class CitizenService {
             dto.setLastName(cInterface.getLast_name());
             dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
             dto.setMiddleName(cInterface.getMiddle_name());
-            dto.setRegionAddress(cInterface.getCitizen_address());
+            dto.setRegionName(cInterface.getRegion_name());
+            dto.setNeighborhoodName(cInterface.getNeighborhood_name());
             dto.setRegionId(cInterface.getRegion_id());
             dto.setLocationInformation(cInterface.getLocation_information());
             dto.setCauseOfEvent(cInterface.getCause_of_event());
@@ -224,7 +225,8 @@ public class CitizenService {
             dto.setRegionId(citizen.getRegion_id());
             dto.setCategory(TOTAL_CHECKED_OBJECT_GUARDS.name());
             dto.setLocationInformation(citizen.getLocation_information());
-            dto.setRegionAddress(citizen.getCitizen_address());
+            dto.setRegion_name(citizen.getRegion_name());
+            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setLocationInformationObject(citizen.getLocation_information_object());
             citizenList.add(dto);
         }
@@ -242,6 +244,8 @@ public class CitizenService {
             dto.setPhoneNumber(citizen.getPhone_number());
             dto.setCategoryId(citizen.getCategory_id());
             dto.setRegionId(citizen.getRegion_id());
+            dto.setRegion_name(citizen.getRegion_name());
+            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setLocationInformation(citizen.getLocation_information());
             dto.setEmployeeSummary(citizen.getEmployee_summary());
             citizenList.add(dto);
@@ -261,7 +265,8 @@ public class CitizenService {
             dto.setCategoryId(citizen.getCategory_id());
             dto.setCategory(CAUGHT_WANTED_CITIZEN.name());
             dto.setRegionId(citizen.getRegion_id());
-            dto.setRegionAddress(citizen.getCitizen_address());
+            dto.setRegion_name(citizen.getRegion_name());
+            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setLocationInformation(citizen.getLocation_information());
             dto.setEmployeeSummary(citizen.getEmployee_summary());
             caughtWantedCitizenDtoList.add(dto);
@@ -281,10 +286,10 @@ public class CitizenService {
             dto.setCategory(STATEMENT.name());
             dto.setBirthDate(citizen.getBirth_date().toString());
             dto.setLocationInformation(citizen.getLocation_information());
-            dto.setRegionAddress(citizen.getLocation_information());
             dto.setEmployeeSummary(citizen.getEmployee_summary());
             dto.setStatement(citizen.getStatement());
-            dto.setRegionAddress(citizen.getCitizen_address());
+            dto.setRegion_name(citizen.getRegion_name());
+            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setPlaceOfImport(citizen.getPlace_of_import());
             citizenDtoList.add(dto);
         }
@@ -303,7 +308,8 @@ public class CitizenService {
             dto.setCategoryId(cInterface.getCategory_id());
             dto.setCreatedDate(cInterface.getCreated_date());
             dto.setLocationInformation(cInterface.getLocation_information());
-            dto.setRegionAddress(cInterface.getCitizen_address());
+            dto.setRegion_name(cInterface.getRegion_name());
+            dto.setNeighborhood_name(cInterface.getNeighborhood_name());
             dto.setStandUpPROF(cInterface.getStand_upprof());
             dto.setEmployeeSummary(cInterface.getEmployee_summary());
             dto.setPhoneNumber(cInterface.getPhone_number());
@@ -325,7 +331,8 @@ public class CitizenService {
             dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
             dto.setCategory(IIO_CITIZEN.name());
             dto.setMiddleName(cInterface.getMiddle_name());
-            dto.setRegionAddress(cInterface.getCitizen_address());
+            dto.setRegion_name(cInterface.getRegion_name());
+            dto.setNeighborhood_name(cInterface.getNeighborhood_name());
             dto.setRegionId(cInterface.getRegion_id());
             dto.setLocationInformation(cInterface.getLocation_information());
             dto.setCauseOfEvent(cInterface.getCause_of_event());

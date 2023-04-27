@@ -13,7 +13,8 @@ import uz.internal_affairs.dto.FileDto;
 public class StatementCitizenDto extends BaseCitizenDto{  //bayonat
     private Long regionId;                // mahalla id
     private String locationInformation;   // joy xaqida tuliq malumot
-    private String regionAddress;
+    private String region_name;
+    private String neighborhood_name;
     private String birthDate;             // pattern = dd.mm.yyyy
     private FileDto fingerprintFile;      // barmoq izi
     private FileDto imageDto;             // rasm
