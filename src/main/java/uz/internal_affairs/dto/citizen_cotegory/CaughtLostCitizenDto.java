@@ -1,16 +1,18 @@
 package uz.internal_affairs.dto.citizen_cotegory;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import uz.internal_affairs.dto.FileDto;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CaughtLostCitizenDto extends BaseCitizenDto{ // Aniqlangan bedaraklar
 
     private Long regionId;                // mahalla id
     private String locationInformation;   // joy xaqida tuliq malumot
-    private String regionAddress;
+    private String region_name;
+    private String neighborhood_name;
     private FileDto fingerprintFile;      // barmoq izi
     private FileDto imageDto;             // rasm
     private String imageUrl;
@@ -18,4 +20,6 @@ public class CaughtLostCitizenDto extends BaseCitizenDto{ // Aniqlangan bedarakl
 
 
     private String employeeSummary;       // hodim Xulosasi
+
+
 }

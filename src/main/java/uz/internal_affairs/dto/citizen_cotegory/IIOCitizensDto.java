@@ -7,12 +7,13 @@ import uz.internal_affairs.dto.FileDto;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+
 public class IIOCitizensDto extends BaseCitizenDto {
     private String birthDate;             // pattern = dd.mm.yyyy
     private Long regionId;                // mahalla id
     private String locationInformation;   // joy xaqida tuliq malumot
-    private String regionAddress;
+    private String region_name;
+    private String neighborhood_name;
     private FileDto fingerprintFile;      // barmoq izi
     private FileDto imageDto;             // rasm
     private String imageUrl;

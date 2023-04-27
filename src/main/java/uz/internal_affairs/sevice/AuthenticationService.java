@@ -59,6 +59,7 @@ public class AuthenticationService {
         try {
             user.forCreate(userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(()-> new UsernameNotFoundException(" user name not found!")).getId());
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setRegionId(user.getRegionId());
             user.setBirtDate(DateUtils.parseDate(userDto.getBirtDate(),DateUtil.PATTERN14));
             user.setRole(userDto.getRole() == Role.ADMIN ? Role.ADMIN : Role.USER);
         }

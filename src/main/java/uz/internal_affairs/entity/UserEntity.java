@@ -29,11 +29,14 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
   private String middleName;
   private Date birtDate;
   private String phoneNumber;
-  private String regionId;
-  private String neighborhoodId;
   @Column(unique = true,nullable = false)
   private String username;
   private String password;
+  @Column(name = "regionId", nullable = false)
+  private Long regionId;
+  @ManyToOne()
+  @JoinColumn(name = "regionId", insertable = false, updatable = false)
+  private RegionEntity regionEntity;
 
   @Enumerated(EnumType.STRING)
   private Role role;

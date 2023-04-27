@@ -32,6 +32,7 @@ import uz.internal_affairs.repository.UserRepository;
 import java.util.*;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.*;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,13 @@ public class CitizenService {
         dataGrid.setTotal(getTotal(filterForm));
         return dataGrid;
     }
+    public DataGrid<AllCitizenDto> userJobs(Long userId,HttpServletRequest request, FilterForm filterForm) throws Exception {
+        DataGrid<AllCitizenDto> dataGrid = new DataGrid<>();
+        dataGrid.setRows(getWorkDone(userId,request, filterForm));
+        dataGrid.setTotal(getTotal(filterForm));
+        return dataGrid;
+    }
+
 
 
     public List<IIOCitizensDto> rows(HttpServletRequest request, FilterForm filterForm) {
@@ -192,7 +200,8 @@ public class CitizenService {
             dto.setLastName(cInterface.getLast_name());
             dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
             dto.setMiddleName(cInterface.getMiddle_name());
-            dto.setRegionAddress(cInterface.getCitizen_address());
+            dto.setRegionName(cInterface.getRegion_name());
+            dto.setNeighborhoodName(cInterface.getNeighborhood_name());
             dto.setRegionId(cInterface.getRegion_id());
             dto.setLocationInformation(cInterface.getLocation_information());
             dto.setCauseOfEvent(cInterface.getCause_of_event());
@@ -216,7 +225,8 @@ public class CitizenService {
             dto.setRegionId(citizen.getRegion_id());
             dto.setCategory(TOTAL_CHECKED_OBJECT_GUARDS.name());
             dto.setLocationInformation(citizen.getLocation_information());
-            dto.setRegionAddress(citizen.getCitizen_address());
+            dto.setRegion_name(citizen.getRegion_name());
+            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setLocationInformationObject(citizen.getLocation_information_object());
             citizenList.add(dto);
         }
@@ -234,6 +244,8 @@ public class CitizenService {
             dto.setPhoneNumber(citizen.getPhone_number());
             dto.setCategoryId(citizen.getCategory_id());
             dto.setRegionId(citizen.getRegion_id());
+            dto.setRegion_name(citizen.getRegion_name());
+            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setLocationInformation(citizen.getLocation_information());
             dto.setEmployeeSummary(citizen.getEmployee_summary());
             citizenList.add(dto);
@@ -253,7 +265,8 @@ public class CitizenService {
             dto.setCategoryId(citizen.getCategory_id());
             dto.setCategory(CAUGHT_WANTED_CITIZEN.name());
             dto.setRegionId(citizen.getRegion_id());
-            dto.setRegionAddress(citizen.getCitizen_address());
+            dto.setRegion_name(citizen.getRegion_name());
+            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setLocationInformation(citizen.getLocation_information());
             dto.setEmployeeSummary(citizen.getEmployee_summary());
             caughtWantedCitizenDtoList.add(dto);
@@ -273,10 +286,10 @@ public class CitizenService {
             dto.setCategory(STATEMENT.name());
             dto.setBirthDate(citizen.getBirth_date().toString());
             dto.setLocationInformation(citizen.getLocation_information());
-            dto.setRegionAddress(citizen.getLocation_information());
             dto.setEmployeeSummary(citizen.getEmployee_summary());
             dto.setStatement(citizen.getStatement());
-            dto.setRegionAddress(citizen.getCitizen_address());
+            dto.setRegion_name(citizen.getRegion_name());
+            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setPlaceOfImport(citizen.getPlace_of_import());
             citizenDtoList.add(dto);
         }
@@ -295,7 +308,8 @@ public class CitizenService {
             dto.setCategoryId(cInterface.getCategory_id());
             dto.setCreatedDate(cInterface.getCreated_date());
             dto.setLocationInformation(cInterface.getLocation_information());
-            dto.setRegionAddress(cInterface.getCitizen_address());
+            dto.setRegion_name(cInterface.getRegion_name());
+            dto.setNeighborhood_name(cInterface.getNeighborhood_name());
             dto.setStandUpPROF(cInterface.getStand_upprof());
             dto.setEmployeeSummary(cInterface.getEmployee_summary());
             dto.setPhoneNumber(cInterface.getPhone_number());
@@ -317,7 +331,8 @@ public class CitizenService {
             dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
             dto.setCategory(IIO_CITIZEN.name());
             dto.setMiddleName(cInterface.getMiddle_name());
-            dto.setRegionAddress(cInterface.getCitizen_address());
+            dto.setRegion_name(cInterface.getRegion_name());
+            dto.setNeighborhood_name(cInterface.getNeighborhood_name());
             dto.setRegionId(cInterface.getRegion_id());
             dto.setLocationInformation(cInterface.getLocation_information());
             dto.setCauseOfEvent(cInterface.getCause_of_event());
@@ -358,7 +373,7 @@ public class CitizenService {
         return citizenRepository.getTotal(category);
     }
 
-    public IIOCitizensDto saveCitizen(HttpServletRequest request, IIOCitizensDto dto) throws ParseException {
+    public AllCitizenDto saveCitizen(HttpServletRequest request, AllCitizenDto dto) throws ParseException {
         if (dto == null || StringUtils.isEmpty(dto.getCategory())) return null;
 
         Optional<CategoryEntity> optCategory = categoryRepository.findByName(dto.getCategory());
@@ -383,7 +398,7 @@ public class CitizenService {
             entity.setStatus(EntityStatus.CREATED);
             citizenRepository.save(entity);
         }
-        return entity.toIIOCitizenDto();
+        return entity.toAllCitizenDto();
     }
 
     @Transactional
@@ -392,17 +407,34 @@ public class CitizenService {
         return numAffectedRows > 0;
     }
 
-    public List<IIOCitizensDto> getWorkDone(String username) {
-        List<CitizenEntity> myWorkDone = citizenRepository.getMyWorkDone(username);
-        return myWorkDone.stream().map(e -> {
-            IIOCitizensDto dto = new IIOCitizensDto();
-            BeanUtils.copyProperties(e, dto, "birtDate");
-            dto.setBirthDate(e.getBirthDate().toString());
-            dto.setRegionId(regionRepository.findById(e.getRegionId()).orElse(new RegionEntity()).getId());
-            dto.setCategory(categoryRepository.findById(e.getCategoryId()).orElse(new CategoryEntity()).getName());
-            return dto;
-        }).collect(Collectors.toList());
+    public List<AllCitizenDto> getWorkDone(Long userId,HttpServletRequest request, FilterForm filterForm) {
+        List<AllCitizenDto> getUserJobList = new ArrayList<>();
+        Sort sort = Sort.by(Sort.Order.by("id"));
+        Pageable pageable = PageRequest.of(filterForm.getStart() / filterForm.getLength(), filterForm.getLength(), sort);
+        Page<CitizenInterface> pageCitizens = citizenRepository.getUserJobs(userId,pageable);
 
+        if(!pageCitizens.isEmpty()){
+            for(CitizenInterface cInterface : pageCitizens){
+                AllCitizenDto dto = new AllCitizenDto();
+                dto.setId(cInterface.getId());
+                dto.setCreatedBy(cInterface.getCreated_by());
+                dto.setCategoryId(cInterface.getCategory_id());
+                dto.setPhoneNumber(cInterface.getPhone_number());
+                dto.setFirstName(cInterface.getFirst_name());
+                dto.setLastName(cInterface.getLast_name());
+                dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
+                dto.setMiddleName(cInterface.getMiddle_name());
+                dto.setRegionName(cInterface.getRegion_name());
+                dto.setNeighborhoodName(cInterface.getNeighborhood_name());
+                dto.setRegionId(cInterface.getRegion_id());
+                dto.setLocationInformation(cInterface.getLocation_information());
+                dto.setCauseOfEvent(cInterface.getCause_of_event());
+                dto.setEmployeeSummary(cInterface.getEmployee_summary());
+                dto.setPlaceOfImport(cInterface.getPlace_of_import());
+                getUserJobList.add(dto);
+            }
+        }
+        return getUserJobList;
     }
 
     public Sort orderSortField(String field) {

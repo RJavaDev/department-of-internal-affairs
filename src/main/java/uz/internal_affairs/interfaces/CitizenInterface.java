@@ -56,4 +56,7 @@ public interface CitizenInterface {
     Long getImage_id();
 
     String getCitizen_address();
+
+    String getRegion_name();
+    String getNeighborhood_name();
 }
