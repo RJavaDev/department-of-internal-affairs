@@ -20,7 +20,7 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
      *
      * */
     @Query("from CitizenEntity c where c.status <> 'DELETED' and (?1 IS NULL OR (c.categoryEntity.name = ?1))")
-    Page<CitizenEntity> rows(Pageable pageable, @Param("category") String category);
+    List<CitizenEntity> rows(@Param("category") String category);
 
     @Query(value = "SELECT\n" +
                    "      dc.*,\n" +
@@ -46,7 +46,7 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
                    "where (:category IS NULL OR dc.category_id = (select id from d_category where name = :category)) and dc.status <> 'DELETED'",
                    countProjection = "SELECT count(*) FROM d_citizen WHERE (:category IS NULL OR dc.category_id = (select id from d_category where name = :category)) and dc.status <> 'DELETED'",
                    nativeQuery = true)
-    Page<CitizenInterface> list(@Param("category") String category, Pageable pageable);
+    List<CitizenInterface> list(@Param("category") String category);
 
     @Query(value = "select count(*) from d_citizen dc where dc.status <> 'DELETED' AND (:category IS NULL OR (dc.category_id = (select id from d_category where name = :category)))", nativeQuery = true)
     Integer getTotal(@Param("category") String category);
@@ -75,14 +75,19 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
             "    COALESCE(:startDate, CAST('1970-01-01 00:00:00' AS TIMESTAMP WITHOUT TIME ZONE))\n" +
             "    AND COALESCE(:endDate, NOW())\n" +
             "  AND (:categoryId IS NULL OR d_c.category_id = :categoryId)\n" +
-            "  AND (:regionId IS NULL OR d_c.region_id = :regionId)",nativeQuery = true)
+            "  AND (:regionId IS NULL OR d_c.region_id = :regionId)",
+            countProjection =   " SELECT COUNT(d_c.*) \n" +
+                                " FROM d_citizen d_c \n" +
+                                " WHERE d_c.created_date BETWEEN \n" +
+                                "     COALESCE(:startDate, CAST('1970-01-01 00:00:00' AS TIMESTAMP WITHOUT TIME ZONE)) \n" +
+                                "     AND COALESCE(:endDate, NOW()) AND (:categoryId IS NULL OR d_c.category_id = :categoryId) AND (:regionId IS NULL OR d_c.region_id = :regionId) ",
+            nativeQuery = true)
 
-    Page<CitizenInterface> getCategoryDateRegionFilter(
+    List<CitizenInterface> getCategoryDateRegionFilter(
             @Param("categoryId") Long categoryId,
             @Param("regionId") Long regionId,
             @Param("startDate")Date startDate,
-            @Param("endDate") Date endDate,
-            Pageable pageable
+            @Param("endDate") Date endDate
     );
 
 }

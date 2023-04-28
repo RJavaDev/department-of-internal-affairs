@@ -1,6 +1,7 @@
 package uz.internal_affairs.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,8 @@ public class UserController {
     private final UserService userService;
     private final CitizenService citizenService;
 
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/get-user-score")
     @Operation(summary = "Method of user score",
             description = "points accumulated by the current user for one day and one month")
@@ -39,6 +42,7 @@ public class UserController {
         return response;
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "This method for get",description = "To get all users for admin")
     @GetMapping("/list")
@@ -54,6 +58,7 @@ public class UserController {
         return response;
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "This method for get", description = "This method is used to get how many points the admin user has scored")
     @GetMapping("/info/{id}")
@@ -69,6 +74,8 @@ public class UserController {
         return response;
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @Operation(summary = "This method for update", description = "This method updates the user's data")
     @PostMapping("/update")
     public HttpResponse<Object> userUpdate(@RequestBody UserDto userDto) {
@@ -76,7 +83,7 @@ public class UserController {
 
         try {
             if (userService.updateUser(userDto)) {
-                return response.code(HttpResponse.Status.OK).success(true);
+                return response.code(HttpResponse.Status.OK).success(true).body("successfully !!!");
             }
         } catch (Exception ex) {
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
@@ -84,6 +91,8 @@ public class UserController {
         return response;
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @Operation(summary = "This method for get", description = "This method way to determine what the user has job done")
     @GetMapping("/my-work-done")
     public HttpResponse<Object> getWorkDone() {
@@ -99,8 +108,9 @@ public class UserController {
         return response;
     }
 
-    @Operation(summary = "This user for update", description = "This method is designed to delete a user by ID")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "This user for update", description = "This method is designed to delete a user by ID")
     @DeleteMapping("/delete/{id}")
     public HttpResponse<Object> userDelete(@PathVariable Long id) {
 
@@ -116,6 +126,5 @@ public class UserController {
         }
         return response;
     }
-
 
 }
