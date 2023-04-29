@@ -122,7 +122,7 @@ public class CitizenService {
 
         }
 
-        List<CitizenInterface> pageCitizens = citizenRepository.getCategoryDateRegionFilter(categoryId, regionId, startDate, endDate);
+        List<CitizenInterface> pageCitizens = citizenRepository.getCategoryDateRegionFilter(categoryId, regionId, startDate, endDate, filterForm.getStart(), filterForm.getLength());
 
         if (!pageCitizens.isEmpty()) {
             if (categoryId != null) {
