@@ -14,22 +14,23 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LogoutService implements LogoutHandler {
 
-  private Logger logger = LoggerFactory.getLogger(getClass().getName());
-  @Override
-  public void logout(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      Authentication authentication
-  ) {
-    final String authHeader = request.getHeader("Authorization");
-    final String jwt;
-    if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
-      return;
+    private Logger logger = LoggerFactory.getLogger(getClass().getName());
+
+    @Override
+    public void logout(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Authentication authentication
+    ) {
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return;
+        }
+
+        jwt = authHeader.substring(7);
+        logger.atInfo().log(jwt);
+
+        SecurityContextHolder.clearContext();
     }
-
-    jwt = authHeader.substring(7);
-    logger.atInfo().log(jwt);
-
-    SecurityContextHolder.clearContext();
-  }
 }

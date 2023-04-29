@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.internal_affairs.constants.TableNames;
 import uz.internal_affairs.dto.FileDto;
-import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.entity.base.BaseServerModifierEntity;
 
 @Getter
