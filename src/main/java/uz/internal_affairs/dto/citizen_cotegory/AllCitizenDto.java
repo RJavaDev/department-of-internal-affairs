@@ -30,7 +30,7 @@ public class AllCitizenDto extends BaseCitizenDto {
     private String fingerprintUrl;
 
 
-    public static List<AllCitizenDto> allCitizenDtoList(List<CitizenInterface> pageCitizens) {
+    public static List allCitizenDtoList(List<CitizenInterface> pageCitizens) {
         List<AllCitizenDto> list = new ArrayList<>();
         for (CitizenInterface citizen : pageCitizens) {
             AllCitizenDto dto = new AllCitizenDto();

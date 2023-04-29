@@ -12,9 +12,9 @@ import java.util.Map;
 public class FilterForm implements Serializable {
     private static final long serialVersionUID = -1183975305038088044L;
 
-    private Integer start;
+    private Integer start = 0;
 
-    private Integer length;
+    private Integer length = 10;
 
     private Map<String, Object> filter;
 }

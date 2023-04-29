@@ -18,7 +18,7 @@ public class HuntingWeaponsCitizenDto extends BaseCitizenDto{ // tekshirilgan ov
     private String employeeSummary;         //Hodim Xulosasi(text)
 
 
-    public static List<HuntingWeaponsCitizenDto> huntingWeaponsCitizenDtoList(List<CitizenInterface> pageCitizens) {
+    public static List huntingWeaponsCitizenDtoList(List<CitizenInterface> pageCitizens) {
         List<HuntingWeaponsCitizenDto> citizenList = new ArrayList<>();
         for (CitizenInterface citizen : pageCitizens) {
             HuntingWeaponsCitizenDto dto = new HuntingWeaponsCitizenDto();

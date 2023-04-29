@@ -13,6 +13,7 @@ import uz.internal_affairs.common.util.DateUtil;
 import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.constants.EntityStatus;
 import uz.internal_affairs.dto.citizen_cotegory.*;
+import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.entity.CategoryEntity;
 import uz.internal_affairs.entity.CitizenEntity;
@@ -41,14 +42,21 @@ import static uz.internal_affairs.dto.citizen_cotegory.TotalGuardsCitizenDto.tot
 
 @Service("citizenService")
 @RequiredArgsConstructor
-public class CitizenService {
+public class CitizenService<T extends BaseCitizenDto> {
     private final CitizenRepository citizenRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final RegionRepository regionRepository;
 
+    public DataGrid<? extends BaseCitizenDto> datagrid(HttpServletRequest request, FilterForm filter){
+        DataGrid<T> datagrid = new DataGrid<>();
+        datagrid.setTotal(getTotal(filter));
+        datagrid.setRows(citizenList(request, filter));
+        return datagrid;
+    }
 
-    public List<? extends BaseCitizenDto> getCategoryFilterList(HttpServletRequest request, FilterForm filterForm) {
+
+    public List<T> citizenListByCategoryName(HttpServletRequest request, FilterForm filterForm) throws ParseException {
 
         Map<String, Object> filterMap = filterForm.getFilter();
         String category = null;
@@ -86,7 +94,7 @@ public class CitizenService {
         return null;
     }
 
-    public List<? extends BaseCitizenDto> getCategoryDateRegionFilter(HttpServletRequest request, FilterForm filterForm) {
+    public List<T> citizenList(HttpServletRequest request, FilterForm filterForm) {
 
         var filterMap = filterForm.getFilter();
 

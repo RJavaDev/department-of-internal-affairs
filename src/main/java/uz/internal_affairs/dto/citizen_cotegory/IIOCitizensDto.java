@@ -28,7 +28,7 @@ public class IIOCitizensDto extends BaseCitizenDto {
     private String employeeSummary;       // hodim Xulosasi
     private String placeOfImport;         // olib kelingan joy
 
-    public static List<IIOCitizensDto> IIOCitizenDtoList(List<CitizenInterface> pageCitizens) {
+    public static List IIOCitizenDtoList(List<CitizenInterface> pageCitizens) {
         List<IIOCitizensDto> iIOCitizenList = new ArrayList<>();
         for (CitizenInterface citizen : pageCitizens) {
             IIOCitizensDto dto = new IIOCitizensDto();

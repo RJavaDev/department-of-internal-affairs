@@ -23,7 +23,7 @@ public class CaughtWantedCitizenDto extends BaseCitizenDto{  // Ushlangan qidiru
     private String employeeSummary;       // hodim Xulosasi
     private String regionAddress;
 
-    public static List<CaughtWantedCitizenDto> caughtWantedCitizenDtoList(List<CitizenInterface> pageCitizens) {
+    public static List caughtWantedCitizenDtoList(List<CitizenInterface> pageCitizens) {
         List<CaughtWantedCitizenDto> caughtWantedCitizenDtoList = new ArrayList<>();
         for (CitizenInterface citizen : pageCitizens) {
             CaughtWantedCitizenDto dto = new CaughtWantedCitizenDto();
