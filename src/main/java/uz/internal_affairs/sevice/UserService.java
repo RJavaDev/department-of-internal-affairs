@@ -16,6 +16,7 @@ import uz.internal_affairs.dto.UserScoreDto;
 import uz.internal_affairs.entity.RegionEntity;
 import uz.internal_affairs.entity.UserEntity;
 import uz.internal_affairs.interfaces.CitizenInterface;
+import uz.internal_affairs.interfaces.UserInterface;
 import uz.internal_affairs.repository.RegionRepository;
 import uz.internal_affairs.repository.UserRepository;
 
@@ -28,26 +29,39 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RegionRepository regionRepository;
-    private Logger log = LoggerFactory.getLogger(getClass().getName());
+    private final Logger log = LoggerFactory.getLogger(getClass().getName());
 
     public List<UserDto> getUserAll() {
         List<UserDto> userResponseDto = new ArrayList<>();
-        List<UserEntity> userListDB = userRepository.getAllUser();
-        List<RegionEntity> all = regionRepository.findAll();
-        userListDB.forEach((user) -> {
-            UserDto userDto = user.toDto("password", "birtDate");
-            userDto.setRegionName(all.get(0).getName());
-            userDto.setNeighborhoodName(all.get(Math.toIntExact(user.getRegionId() - 1)).getName());
-            userDto.setBirtDate(user.getBirtDate() == null ? null : user.getBirtDate().toString());
-            userResponseDto.add(userDto);
-        });
-        return userResponseDto;
+        List<UserInterface> listUserInterfaces = userRepository.getAllUserInterface();
+        log.atInfo().log("!Получение... Все пользователи");
 
+        for(UserInterface uInterface : listUserInterfaces){
+            UserDto dto = new UserDto();
+            dto.setId(uInterface.getId());
+            dto.setFirstname(uInterface.getFirstname());
+            dto.setLastname(uInterface.getLastname());
+            dto.setMiddleName(uInterface.getMiddlename());
+            dto.setBirtDate(DateUtil.format(uInterface.getBirth_date(), DateUtil.PATTERN3));
+            dto.setRegionId(uInterface.getRegion_id());
+            dto.setRegionName(uInterface.getRegion_name());
+            dto.setNeighborhoodName(uInterface.getParent_region_name());
+            dto.setFingerprintId(uInterface.getFile_id());
+            dto.setPhoneNumber(uInterface.getPhone_number());
+            dto.setUsername(uInterface.getUsername());
+            dto.setRole(uInterface.getRole());
+            dto.setStatus(uInterface.getStatus());
+
+            dto.setFingerPrintFileUrl(null);        // keyinroq yozaman
+            userResponseDto.add(dto);
+        }
+        return userResponseDto;
     }
 
     public UserScoreDto getUserScore() {
         UserEntity currentUser = userRepository.findByUsername(SecurityUtils.getUsername()).orElseThrow(
                 () -> new UsernameNotFoundException("Not found!"));
+        log.atInfo().log("!Получение... Оценка пользователя по ИД");
         UserScoreDto userScoreDto = new UserScoreDto();
         userScoreDto.setUserScoreDay(userRepository.getUserScoreToday(currentUser.getId()));
         userScoreDto.setUserScoreMonth(userRepository.getUserScoreMonth(currentUser.getId()));
@@ -56,6 +70,7 @@ public class UserService {
 
     public UserDto getUserInformation(Long id) {
         UserEntity userInformation = userRepository.getUserInformation(id);
+        log.atInfo().log("!Получение... Информация о пользователе по ИД");
         CitizenInterface regionAndNeighborhood = regionRepository.getRegionAndNeighborhood(userInformation.getRegionId());
         UserDto responseInformationUser = userInformation.toDto();
         responseInformationUser.setBirtDate(userInformation.getBirtDate()==null ? null :userInformation.getBirtDate().toString());
@@ -82,7 +97,7 @@ public class UserService {
         if (!StringUtils.isEmpty(userDto.getLastname())) user.setLastname(userDto.getLastname());
         if (!StringUtils.isEmpty(userDto.getUsername())) user.setUsername(userDto.getUsername());
         if (!StringUtils.isEmpty(userDto.getPhoneNumber())) user.setPhoneNumber(userDto.getPhoneNumber());
-        if (!StringUtils.isEmpty(userDto.getMiddleName())) user.setMiddleName(userDto.getMiddleName());
+        if (!StringUtils.isEmpty(userDto.getMiddleName())) user.setMiddlename(userDto.getMiddleName());
         if (!StringUtils.isEmpty(userDto.getPassword()))
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         if (!StringUtils.isEmpty(userDto.getBirtDate())) {

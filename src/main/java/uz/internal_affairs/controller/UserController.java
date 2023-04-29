@@ -54,8 +54,9 @@ public class UserController {
     public HttpResponse<Object> getUserList() {
         HttpResponse<Object> response = HttpResponse.build(false);
         try {
-
-            response.code(HttpResponse.Status.OK).success(true).body(userService.getUserAll()).message("successfully!!!");
+            List<UserDto> userList = userService.getUserAll();
+            if(userList == null || userList.isEmpty()) response.code(HttpResponse.Status.NOT_FOUND).message("Not found any user!!!");
+            else response.code(HttpResponse.Status.OK).success(true).body(userService.getUserAll()).message("successfully!!!");
         } catch (Exception e) {
             e.printStackTrace();
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);

@@ -24,7 +24,8 @@ public class UserDto extends BaseServerModifierDto {
     private UserScoreDto userScore;
     private Role role;
     private String image;
-    private String fingerprint;
+    private Long fingerprintId;
+    private String fingerPrintFileUrl;
 
     public UserEntity toEntity( String... ignoreProperties) {
         return super.toEntity(this, new UserEntity(), ignoreProperties);

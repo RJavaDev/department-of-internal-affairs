@@ -44,7 +44,8 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
                    "    from d_citizen dc\n" +
                    "left join d_region dr on dr.id = dc.region_id\n" +
                    "where (:category IS NULL OR dc.category_id = (select id from d_category where name = :category)) and dc.status <> 'DELETED'",
-                   countProjection = "SELECT count(*) FROM d_citizen WHERE (:category IS NULL OR dc.category_id = (select id from d_category where name = :category)) and dc.status <> 'DELETED'",
+//                   countProjection = "SELECT count(*) FROM d_citizen WHERE (:category IS NULL OR dc.category_id = (select id from d_category where name = :category)) and dc.status <> 'DELETED'",
+//                   countProjection = "SELECT 1",
                    nativeQuery = true)
     Page<CitizenInterface> list(@Param("category") String category, Pageable pageable);
 

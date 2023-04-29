@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,6 +47,7 @@ public class CitizenService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final RegionRepository regionRepository;
+    private final Logger log = LoggerFactory.getLogger(getClass().getName());
 
 
     public DataGrid<Object> dataGrid(HttpServletRequest request, FilterForm filterForm) throws Exception {
@@ -410,7 +413,7 @@ public class CitizenService {
     public List<AllCitizenDto> getWorkDone(Long userId,HttpServletRequest request, FilterForm filterForm) {
         List<AllCitizenDto> getUserJobList = new ArrayList<>();
         Sort sort = Sort.by(Sort.Order.by("id"));
-        Pageable pageable = PageRequest.of(filterForm.getStart() / filterForm.getLength(), filterForm.getLength(), sort);
+        Pageable pageable = PageRequest.of(filterForm.getStart() / filterForm.getLength(), Integer.MAX_VALUE, sort);
         Page<CitizenInterface> pageCitizens = citizenRepository.getUserJobs(userId,pageable);
 
         if(!pageCitizens.isEmpty()){

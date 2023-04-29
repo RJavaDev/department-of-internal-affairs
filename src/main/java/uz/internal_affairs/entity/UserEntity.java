@@ -26,7 +26,7 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
 
   private String firstname;
   private String lastname;
-  private String middleName;
+  private String middlename;
   private Date birtDate;
   private String phoneNumber;
   @Column(unique = true,nullable = false)
@@ -36,12 +36,13 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
   private Long regionId;
   @ManyToOne()
   @JoinColumn(name = "regionId", insertable = false, updatable = false)
-  private RegionEntity regionEntity;
+  private RegionEntity region;
 
   @Enumerated(EnumType.STRING)
   private Role role;
   @OneToOne
-  private FileEntity fileEntity;
+  @JoinColumn(name = "fileId")
+  private FileEntity file;
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Arrays.asList(new SimpleGrantedAuthority(role.name()));

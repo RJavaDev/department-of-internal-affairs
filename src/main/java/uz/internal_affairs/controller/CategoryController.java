@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uz.internal_affairs.dto.CategoryDto;
 import uz.internal_affairs.dto.response.HttpResponse;
 import uz.internal_affairs.entity.CategoryEntity;
 import uz.internal_affairs.sevice.CategoryService;
@@ -20,15 +21,16 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     /**
-     *  categorya haqida malumotlar
-     * @return
+     *  Information about category
+     * @author bekzod1660
+     * @return HttpResponse of Category List Info
      */
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/categoryList-info")
+    @GetMapping("/list")
     public HttpResponse<Object> getCategoryListInfo(){
         HttpResponse<Object> response = new HttpResponse<>(true);
         try {
-            List<CategoryEntity> categoryList = categoryService.getCategoryList();
+            List<CategoryDto> categoryList = categoryService.getCategoryList();
             response.code(HttpResponse.Status.OK).success(true).body(categoryList).message("successfully!!!");
         } catch (Exception e) {
             e.printStackTrace();

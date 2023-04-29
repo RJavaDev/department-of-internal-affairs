@@ -31,9 +31,13 @@ public class RegionEntity  extends BaseServerModifierEntity {
     @JoinColumn(name = "parentId", referencedColumnName = "id")
     List<RegionEntity> children = new ArrayList<>();
 
-    public RegionDto getDto() {
+    public RegionDto getDto(){
+        return getDto(true);
+    }
+
+    public RegionDto getDto(boolean withChildren) {
         RegionDto dto = entityToDto(this, new RegionDto());
-        if (this.getChildren() != null) {
+        if (this.getChildren() != null && withChildren) {
             dto.setChildren(
                     this.getChildren().stream()
                     .map(RegionEntity::getDto)

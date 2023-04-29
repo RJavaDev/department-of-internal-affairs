@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.entity.UserEntity;
+import uz.internal_affairs.interfaces.UserInterface;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
@@ -48,6 +49,25 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(value = "SELECT * FROM d_user WHERE status <> 'DELETE'", nativeQuery = true)
     List<UserEntity> getAllUser();
+
+
+    @Query(value =  "WITH regions AS(\n" +
+                    "    SELECT dr1.id as id,\n" +
+                    "           dr2.id as parent_id,\n" +
+                    "           dr1.name as name,\n" +
+                    "           dr2.name as parent_name\n" +
+                    "    FROM d_region dr1\n" +
+                    "    LEFT JOIN d_region dr2 ON dr1.parent_id = dr2.id\n" +
+                    "    WHERE dr1.parent_id IS NOT NULL\n" +
+                    ")\n" +
+                    "SELECT du.*,\n" +
+                    "       r.parent_id as parent_region_id,\n" +
+                    "       r.name as region_name,\n" +
+                    "       r.parent_name as parent_region_name\n" +
+                    "FROM d_user du\n" +
+                    "LEFT JOIN regions r ON du.region_id = ANY(ARRAY[r.id, r.parent_id])\n" +
+                    "where du.status <> 'DELETED';", nativeQuery = true)
+    List<UserInterface> getAllUserInterface();
 
     @Query(value = "SELECT * FROM d_user WHERE id = :userInformationId AND status <> 'DELETE'", nativeQuery = true)
     UserEntity getUserInformation(@Param("userInformationId") Long id);

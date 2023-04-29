@@ -1,6 +1,8 @@
 package uz.internal_affairs.sevice;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import uz.internal_affairs.common.util.DateUtil;
 import uz.internal_affairs.common.util.SecurityUtils;
@@ -28,6 +30,8 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final Logger log = LoggerFactory.getLogger(getClass().getName());
+
 
     public TokenResponseDto register(UserDto request) {
         String jwtToken = jwtService.generateToken(saveUser(request));
