@@ -23,7 +23,7 @@ public class CaughtLostCitizenDto extends BaseCitizenDto{ // Aniqlangan bedarakl
 
     private String employeeSummary;       // hodim Xulosasi
 
-    public static List<CaughtLostCitizenDto> caughtLostCitizenList(List<CitizenInterface> pageCitizens) {
+    public static List caughtLostCitizenList(List<CitizenInterface> pageCitizens) {
         List<CaughtLostCitizenDto> citizenList = new ArrayList<>();
         for (CitizenInterface citizen : pageCitizens) {
             CaughtLostCitizenDto dto = new CaughtLostCitizenDto();

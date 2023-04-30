@@ -25,7 +25,7 @@ public class StatementCitizenDto extends BaseCitizenDto{  //bayonat
     private String statement;              //  tuzilgan bayonat (text)
     private String placeOfImport;           //olib kelingan joy
 
-    public static List<StatementCitizenDto> statementCitizenDtoList(List<CitizenInterface> pageCitizens) {
+    public static List statementCitizenDtoList(List<CitizenInterface> pageCitizens) {
         List<StatementCitizenDto> citizenDtoList = new ArrayList<>();
         for (CitizenInterface citizen : pageCitizens) {
             StatementCitizenDto dto = new StatementCitizenDto();

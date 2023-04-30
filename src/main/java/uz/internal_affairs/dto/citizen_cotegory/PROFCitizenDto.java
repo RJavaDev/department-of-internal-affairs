@@ -18,7 +18,7 @@ public class PROFCitizenDto extends BaseCitizenDto { //  PROF Hisobda turuvchi S
     private String standUpPROF;             // Tekshirilga PROF Hisobda turuvchi Shaxs
     private String employeeSummary;         //Hodim Xulosasi(text)
 
-    public static List<PROFCitizenDto> PROFCitizenDtoList(List<CitizenInterface> pageCitizens) {
+    public static List PROFCitizenDtoList(List<CitizenInterface> pageCitizens) {
         List<PROFCitizenDto> profCitizenDtoList = new ArrayList<>();
         for (CitizenInterface citizen : pageCitizens) {
             PROFCitizenDto dto = new PROFCitizenDto();

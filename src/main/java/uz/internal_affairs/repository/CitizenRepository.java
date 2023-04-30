@@ -57,25 +57,26 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
 
 
     @Query(value = "SELECT dc.* FROM d_citizen dc\n" +
-            "     INNER JOIN d_user du ON du.username = :myUsername \n" +
-            "    AND  du.id = dc.user_id\n" +
-            "    AND dc.created_date >= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent')\n" +
-            "    AND dc.created_date <= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent' + INTERVAL '1 month')\n" +
-            "WHERE dc.status <> 'DELETE'",nativeQuery = true)
+                   "     INNER JOIN d_user du ON du.username = :myUsername \n" +
+                   "    AND  du.id = dc.user_id\n" +
+                   "    AND dc.created_date >= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent')\n" +
+                   "    AND dc.created_date <= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent' + INTERVAL '1 month')\n" +
+                   "WHERE dc.status <> 'DELETE'",nativeQuery = true)
     List<CitizenEntity> getMyWorkDone(@Param("myUsername") String myUsername);
 
-    @Query(value = "SELECT d_c.*,\n" +
-            "       (SELECT dr_parrent.name || ' ' || dr_chaild.name\n" +
-            "        FROM d_region dr_chaild\n" +
-            "                 INNER JOIN d_region dr_parrent\n" +
-            "                 ON d_c.region_id = dr_chaild.id\n" +
-            "                 AND dr_chaild.parent_id = dr_parrent.id) AS citizen_address\n" +
-            "FROM d_citizen d_c\n" +
-            "WHERE d_c.created_date BETWEEN\n" +
-            "    COALESCE(:startDate, CAST('1970-01-01 00:00:00' AS TIMESTAMP WITHOUT TIME ZONE))\n" +
-            "    AND COALESCE(:endDate, NOW())\n" +
-            "  AND (:categoryId IS NULL OR d_c.category_id = :categoryId)\n" +
-            "  AND (:regionId IS NULL OR d_c.region_id = :regionId)",
+    @Query(value =  "SELECT d_c.*,\n" +
+                    "       (SELECT dr_parrent.name || ' ' || dr_chaild.name\n" +
+                    "        FROM d_region dr_chaild\n" +
+                    "                 INNER JOIN d_region dr_parrent\n" +
+                    "                 ON d_c.region_id = dr_chaild.id\n" +
+                    "                 AND dr_chaild.parent_id = dr_parrent.id) AS citizen_address\n" +
+                    "FROM d_citizen d_c\n" +
+                    "WHERE d_c.created_date BETWEEN\n" +
+                    "    COALESCE(:startDate, CAST('1970-01-01 00:00:00' AS TIMESTAMP WITHOUT TIME ZONE))\n" +
+                    "    AND COALESCE(:endDate, NOW())\n" +
+                    "  AND (:categoryId IS NULL OR d_c.category_id = :categoryId)\n" +
+                    "  AND (:regionId IS NULL OR d_c.region_id = :regionId) \n" +
+                    "ORDER BY d_c.id DESC LIMIT :limit OFFSET :offset",
             countProjection =   " SELECT COUNT(d_c.*) \n" +
                                 " FROM d_citizen d_c \n" +
                                 " WHERE d_c.created_date BETWEEN \n" +
@@ -87,7 +88,9 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
             @Param("categoryId") Long categoryId,
             @Param("regionId") Long regionId,
             @Param("startDate")Date startDate,
-            @Param("endDate") Date endDate
+            @Param("endDate") Date endDate,
+            @Param("offset") int offset,
+            @Param("limit") int limit
     );
 
 }

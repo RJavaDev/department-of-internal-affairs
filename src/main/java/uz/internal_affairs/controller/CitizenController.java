@@ -48,7 +48,7 @@ public class CitizenController {
     public HttpResponse<Object> dataGrid(HttpServletRequest request, @RequestBody FilterForm filter){
         HttpResponse<Object> response = HttpResponse.build(false);
         try{
-            response.code(HttpResponse.Status.OK).success(true).body(citizenService.getCategoryFilterList(request,filter));
+            response.code(HttpResponse.Status.OK).success(true).body(citizenService.datagrid(request, filter));
         }
         catch (Exception e){
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
@@ -59,11 +59,11 @@ public class CitizenController {
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Method for get post", description = "This method is for filtering citizens by category, entered time and place")
-    @PostMapping("/CDF-filter")
-    public HttpResponse<Object> getCategoryDateRegionFilter(HttpServletRequest request, @RequestBody FilterForm filter){
+    @PostMapping("/list")
+    public HttpResponse<Object> getCitizens(HttpServletRequest request, @RequestBody FilterForm filter){
         HttpResponse<Object> response = HttpResponse.build(false);
         try{
-            response.code(HttpResponse.Status.OK).success(true).body(citizenService.getCategoryDateRegionFilter(request, filter));
+            response.code(HttpResponse.Status.OK).success(true).body(citizenService.citizenList(request, filter));
         }
         catch (Exception e){
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);

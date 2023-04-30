@@ -17,7 +17,7 @@ public class TotalGuardsCitizenDto extends BaseCitizenDto{ // jami tekshirilgan 
     private String regionAddress;
     private String locationInformationObject; // obekt manzili
 
-    public static List<TotalGuardsCitizenDto> totalGuardsCitizenDtoList(List<CitizenInterface> pageCitizens) {
+    public static List totalGuardsCitizenDtoList(List<CitizenInterface> pageCitizens) {
         List<TotalGuardsCitizenDto> citizenList = new ArrayList<>();
         for (CitizenInterface citizen : pageCitizens) {
             TotalGuardsCitizenDto dto = new TotalGuardsCitizenDto();

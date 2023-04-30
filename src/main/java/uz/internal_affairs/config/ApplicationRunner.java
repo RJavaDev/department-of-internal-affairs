@@ -25,6 +25,6 @@ public class ApplicationRunner implements CommandLineRunner {
                 .outOfOrder(true)
                 .load();
         // Start the migration
-        flyway.migrate();
+//        flyway.migrate();
     }
 }
