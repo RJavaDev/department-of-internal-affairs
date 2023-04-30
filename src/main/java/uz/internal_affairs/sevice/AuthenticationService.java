@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -51,6 +52,7 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(user);
         return TokenResponseDto.builder()
                 .token(jwtToken)
+                .allowedRoles(Arrays.asList(Role.values()))
                 .build();
     }
 
