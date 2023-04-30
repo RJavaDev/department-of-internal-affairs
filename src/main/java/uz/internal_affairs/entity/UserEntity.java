@@ -34,15 +34,18 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
   private String password;
   @Column(name = "regionId", nullable = false)
   private Long regionId;
-  @ManyToOne()
+  @ManyToOne
   @JoinColumn(name = "regionId", insertable = false, updatable = false)
   private RegionEntity region;
 
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  @Column(name = "imageId", nullable = true)
+  private Long imageId;
   @OneToOne
-  @JoinColumn(name = "fileId")
-  private FileEntity file;
+  @JoinColumn(name = "imageId", insertable = false, updatable = false)
+  private FileEntity image;
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Arrays.asList(new SimpleGrantedAuthority(role.name()));

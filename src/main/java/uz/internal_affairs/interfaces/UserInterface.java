@@ -34,7 +34,7 @@ public interface UserInterface {
 
     String getUsername();
 
-    Long getFile_id();
+    Long getImage_id();
 
     Long getNeighborhood_id();
 

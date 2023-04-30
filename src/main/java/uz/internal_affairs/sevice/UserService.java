@@ -13,7 +13,6 @@ import uz.internal_affairs.common.util.DateUtil;
 import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.dto.UserScoreDto;
-import uz.internal_affairs.entity.RegionEntity;
 import uz.internal_affairs.entity.UserEntity;
 import uz.internal_affairs.interfaces.CitizenInterface;
 import uz.internal_affairs.interfaces.UserInterface;
@@ -46,13 +45,13 @@ public class UserService {
             dto.setRegionId(uInterface.getRegion_id());
             dto.setRegionName(uInterface.getRegion_name());
             dto.setNeighborhoodName(uInterface.getParent_region_name());
-            dto.setFingerprintId(uInterface.getFile_id());
+            dto.setImageId(uInterface.getImage_id());
             dto.setPhoneNumber(uInterface.getPhone_number());
             dto.setUsername(uInterface.getUsername());
             dto.setRole(uInterface.getRole());
             dto.setStatus(uInterface.getStatus());
 
-            dto.setFingerPrintFileUrl(null);        // keyinroq yozaman
+            dto.setImageFileUrl(null);        // keyinroq yozaman
             userResponseDto.add(dto);
         }
         return userResponseDto;
