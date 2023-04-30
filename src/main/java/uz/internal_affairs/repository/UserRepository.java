@@ -15,11 +15,12 @@ import uz.internal_affairs.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    Optional<UserEntity> findByUsername(String username);
+    @Query(value = "SELECT * FROM d_user du WHERE du.username = :username AND du.status <> 'DELETED'", nativeQuery = true)
+    Optional<UserEntity> findByUsername(@Param("username") String username);
 
     /**
      * This method calculates a daily score for the user
-     * */
+     */
     @Query(value = "SELECT SUM(d_cg.score)\n" +
             "FROM d_citizen dc\n" +
             "  INNER JOIN d_user du\n" +
@@ -34,7 +35,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     /**
      * This method calculates the monthly score for the user
-     * */
+     */
     @Query(value = "SELECT SUM(d_cg.score)\n" +
             "FROM d_citizen dc\n" +
             "  INNER JOIN d_user du\n" +
@@ -46,10 +47,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             "    ON dc.category_id = d_cg.id", nativeQuery = true)
     Integer getUserScoreMonth(@Param("myUserId") Long myUserId);
 
-    @Query(value = "SELECT * FROM d_user WHERE status <> 'DELETE'", nativeQuery = true)
+    @Query(value = "SELECT * FROM d_user WHERE status != 'DELETED'", nativeQuery = true)
     List<UserEntity> getAllUser();
 
-    @Query(value = "SELECT * FROM d_user WHERE id = :userInformationId AND status <> 'DELETE'", nativeQuery = true)
+    @Query(value = "SELECT * FROM d_user WHERE id = :userInformationId AND status <> 'DELETED'", nativeQuery = true)
     UserEntity getUserInformation(@Param("userInformationId") Long id);
 
     @Modifying
