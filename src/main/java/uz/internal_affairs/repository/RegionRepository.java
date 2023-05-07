@@ -21,4 +21,7 @@ public interface RegionRepository extends JpaRepository<RegionEntity,Long> {
     List<RegionEntity> findAllByParentId(Long parentId);
 
     Optional<RegionEntity> findByName(String name);
+
+    @Query(value = "from RegionEntity where status <> 'DELETED'")
+    List<RegionEntity> allValidRegions();
 }

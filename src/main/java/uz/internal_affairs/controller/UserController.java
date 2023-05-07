@@ -10,14 +10,10 @@ import uz.internal_affairs.common.util.SecurityUtils;
 import uz.internal_affairs.dto.UserDto;
 import uz.internal_affairs.dto.UserScoreDto;
 import uz.internal_affairs.dto.citizen_cotegory.AllCitizenDto;
-import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
 import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.dto.response.HttpResponse;
-import uz.internal_affairs.entity.CitizenEntity;
-import uz.internal_affairs.entity.UserEntity;
 import uz.internal_affairs.repository.UserRepository;
-import uz.internal_affairs.sevice.CategoryService;
 import uz.internal_affairs.sevice.CitizenService;
 import uz.internal_affairs.sevice.UserService;
 
@@ -56,7 +52,7 @@ public class UserController {
         try {
             List<UserDto> userList = userService.getUserAll();
             if(userList == null || userList.isEmpty()) response.code(HttpResponse.Status.NOT_FOUND).message("Not found any user!!!");
-            else response.code(HttpResponse.Status.OK).success(true).body(userService.getUserAll()).message("successfully!!!");
+            else response.code(HttpResponse.Status.OK).success(true).body(userList).message("successfully!!!");
         } catch (Exception e) {
             e.printStackTrace();
             response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);

@@ -41,7 +41,7 @@ public class UserService {
             dto.setFirstname(uInterface.getFirstname());
             dto.setLastname(uInterface.getLastname());
             dto.setMiddleName(uInterface.getMiddlename());
-            dto.setBirtDate(DateUtil.format(uInterface.getBirth_date(), DateUtil.PATTERN3));
+            dto.setBirthDate(DateUtil.format(uInterface.getBirth_date(), DateUtil.PATTERN3));
             dto.setRegionId(uInterface.getRegion_id());
             dto.setRegionName(uInterface.getRegion_name());
             dto.setNeighborhoodName(uInterface.getParent_region_name());
@@ -72,7 +72,7 @@ public class UserService {
         log.atInfo().log("!Получение... Информация о пользователе по ИД");
         CitizenInterface regionAndNeighborhood = regionRepository.getRegionAndNeighborhood(userInformation.getRegionId());
         UserDto responseInformationUser = userInformation.toDto();
-        responseInformationUser.setBirtDate(userInformation.getBirtDate()==null ? null :userInformation.getBirtDate().toString());
+        responseInformationUser.setBirthDate(DateUtil.format(userInformation.getBirthDate(), DateUtil.PATTERN3));
         responseInformationUser.setNeighborhoodName(regionAndNeighborhood.getNeighborhood_name());
         responseInformationUser.setRegionName(regionAndNeighborhood.getRegion_name());
         UserScoreDto responseUserScore = new UserScoreDto();
@@ -99,9 +99,9 @@ public class UserService {
         if (!StringUtils.isEmpty(userDto.getMiddleName())) user.setMiddlename(userDto.getMiddleName());
         if (!StringUtils.isEmpty(userDto.getPassword()))
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        if (!StringUtils.isEmpty(userDto.getBirtDate())) {
+        if (!StringUtils.isEmpty(userDto.getBirthDate())) {
             try {
-                user.setBirtDate(DateUtils.parseDate(userDto.getBirtDate(), DateUtil.PATTERN14));
+                user.setBirthDate(DateUtils.parseDate(userDto.getBirthDate(), DateUtil.PATTERN14));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }

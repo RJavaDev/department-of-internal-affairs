@@ -25,6 +25,12 @@ public class RegionService {
         return parentRegions.stream().map(RegionEntity::getDto).collect(Collectors.toList());
     }
 
+    public List<RegionDto> regionList(){
+        List<RegionEntity> allRegions = regionRepository.allValidRegions();
+        log.atInfo().log("!Получение... Все регионов");
+        return allRegions.stream().map(r -> r.getDto(false)).collect(Collectors.toList());
+    }
+
     public RegionDto getRegionByName(String regionName){
         if(StringUtils.isEmpty(regionName)) return null;
         Optional<RegionEntity> optRegion = regionRepository.findByName(regionName);

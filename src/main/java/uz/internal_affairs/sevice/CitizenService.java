@@ -89,7 +89,7 @@ public class CitizenService {
         return list;
     }
 
-    public List<Object> rows2(HttpServletRequest request, FilterForm filterForm) {
+    public List rows2(HttpServletRequest request, FilterForm filterForm) {
         Sort sort = orderSortField("id");
         Pageable pageable = pageable(sort, filterForm);
         Map<String, Object> filterMap = filterForm.getFilter();
@@ -105,19 +105,19 @@ public class CitizenService {
         if (!pageCitizens.isEmpty()) {
             if (category != null) {
                 if (category.equals(IIO_CITIZEN.name())) {
-                    return Collections.singletonList(interfaceToIIOCitizenDto(pageCitizens));
+                    return interfaceToIIOCitizenDto(pageCitizens);
                 } else if (category.equals(PROF_CITIZEN.name())) {
-                    return Collections.singletonList(interfaceToPROFCitizenDto(pageCitizens));
+                    return interfaceToPROFCitizenDto(pageCitizens);
                 } else if (category.equals(STATEMENT.name())) {
-                    return Collections.singletonList(interfaceToStatementCitizenDto(pageCitizens));
+                    return interfaceToStatementCitizenDto(pageCitizens);
                 } else if (category.equals(CAUGHT_WANTED_CITIZEN.name())) {
-                    return Collections.singletonList(interfaceToCaughtWantedCitizenDto(pageCitizens));
+                    return interfaceToCaughtWantedCitizenDto(pageCitizens);
                 } else if (category.equals(CAUGHT_LOST_CITIZEN.name())) {
-                    return Collections.singletonList(interfaceToCaughtLostCitizen(pageCitizens));
+                    return interfaceToCaughtLostCitizen(pageCitizens);
                 } else if (category.equals(TOTAL_CHECKED_OBJECT_GUARDS.name())) {
-                    return Collections.singletonList(entityToTotalGuardsCitizenDto(pageCitizens));
+                    return entityToTotalGuardsCitizenDto(pageCitizens);
                 } else if (category.equals(CHECKED_HUNTING_WEAPONS.name())) {
-                    return Collections.singletonList(interfaceToHuntingWeaponsCitizenDto(pageCitizens));
+                    return interfaceToHuntingWeaponsCitizenDto(pageCitizens);
                 }
             } else {
                 return Collections.singletonList(entityToAllCitizenDto(pageCitizens));
@@ -400,7 +400,7 @@ public class CitizenService {
             entity.setUserId(user.getId());
             entity.setStatus(EntityStatus.CREATED);
             citizenRepository.save(entity);
-        }
+        } else return null;
         return entity.toAllCitizenDto();
     }
 
@@ -438,6 +438,17 @@ public class CitizenService {
             }
         }
         return getUserJobList;
+    }
+
+    public AllCitizenDto getCitizenById(Long id){
+        Optional<CitizenEntity> citizenOpt = citizenRepository.findById(id);
+        if(citizenOpt.isPresent()){
+            AllCitizenDto dto = new AllCitizenDto();
+            BeanUtils.copyProperties(citizenOpt.get(), dto, "birthDate");
+            dto.setBirthDate(DateUtil.format(citizenOpt.get().getBirthDate(), DateUtil.PATTERN3));
+            return dto;
+        }
+        return null;
     }
 
     public Sort orderSortField(String field) {
