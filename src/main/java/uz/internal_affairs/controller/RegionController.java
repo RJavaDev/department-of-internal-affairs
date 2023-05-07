@@ -22,8 +22,11 @@ public class RegionController {
         return HttpResponse.build(true).code(HttpResponse.Status.OK).body(regionService.regionTree(regionId));
     }
 
-    @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/list")
+    public HttpResponse<Object> getAllRegionList(){
+        return HttpResponse.build(true).code(HttpResponse.Status.OK).body(regionService.regionList());
+    }
+
     @Operation(summary = "This method for get", description = "This method is designed to get the region by id")
     @GetMapping("/get/{id}")
     public HttpResponse<Object> getRegionById(@PathVariable("id") Long regionId) {

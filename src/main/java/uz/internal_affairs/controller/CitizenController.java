@@ -80,4 +80,19 @@ public class CitizenController {
         }
         return response;
     }
+
+    @GetMapping("/get/{id}")
+    public HttpResponse<Object> get(@PathVariable("id") Long id){
+        HttpResponse<Object> response = HttpResponse.build(false);
+        try{
+            AllCitizenDto citizen = citizenService.getCitizenById(id);
+            if(citizen != null) response.code(HttpResponse.Status.OK).success(true).body(citizen);
+            else{
+                response.code(HttpResponse.Status.NOT_FOUND);
+            }
+        } catch (Exception e){
+            response.code(HttpResponse.Status.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
 }
