@@ -27,7 +27,7 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
   private String firstname;
   private String lastname;
   private String middleName;
-  private Date birtDate;
+  private Date birthDate;
   private String phoneNumber;
   private String regionId;
   private String neighborhoodId;

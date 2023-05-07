@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>uz.programmer</groupId>
-	<artifactId>security</artifactId>
+	<artifactId>internal-affairs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>department-internal-affairs</name>
 	<description>Department of Internal Affairs</description>
