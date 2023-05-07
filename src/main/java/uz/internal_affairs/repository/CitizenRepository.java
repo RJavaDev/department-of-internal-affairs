@@ -11,8 +11,6 @@ import uz.internal_affairs.entity.CitizenEntity;
 import uz.internal_affairs.interfaces.CitizenInterface;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
 
@@ -76,7 +74,7 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
             "                 ON d_c.region_id = dr_chaild.id\n" +
             "                 AND dr_chaild.parent_id = dr_parrent.id) AS citizen_address\n" +
             "FROM d_citizen d_c\n" +
-            "WHERE d_c.created_date BETWEEN\n" +
+            "WHERE d_c.status <> 'DELETED' AND d_c.created_date BETWEEN\n" +
             "    COALESCE(:startDate, CAST('1970-01-01 00:00:00' AS TIMESTAMP WITHOUT TIME ZONE))\n" +
             "    AND COALESCE(:endDate, NOW())\n" +
             "  AND (:categoryId IS NULL OR d_c.category_id = :categoryId)\n" +
