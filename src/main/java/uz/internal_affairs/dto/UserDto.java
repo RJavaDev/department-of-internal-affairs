@@ -19,7 +19,7 @@ public class UserDto extends BaseServerModifierDto {
     private String lastname;
     private String middleName;
     private String birthDate;
-    private String regionId;
+    private Long regionId;
     private String neighborhoodId;
     private String phoneNumber;
     private String username;

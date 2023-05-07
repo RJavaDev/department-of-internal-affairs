@@ -44,8 +44,8 @@ public class UserController {
         return response;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "This method for get",description = "To get all users for admin")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @Operation(summary = "This method for get",description = "To get all users for admin")
     @GetMapping("/list")
     public HttpResponse<Object> getUserList() {
         HttpResponse<Object> response = HttpResponse.build(false);

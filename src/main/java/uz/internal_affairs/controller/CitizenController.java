@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import uz.internal_affairs.dto.citizen_cotegory.AllCitizenDto;
 import uz.internal_affairs.dto.citizen_cotegory.BaseCitizenDto;
-import uz.internal_affairs.dto.citizen_cotegory.IIOCitizensDto;
-import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.dto.response.HttpResponse;
 import uz.internal_affairs.sevice.CitizenService;

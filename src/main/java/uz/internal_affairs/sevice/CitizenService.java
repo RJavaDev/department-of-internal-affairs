@@ -23,7 +23,6 @@ import uz.internal_affairs.dto.response.DataGrid;
 import uz.internal_affairs.dto.response.FilterForm;
 import uz.internal_affairs.entity.CategoryEntity;
 import uz.internal_affairs.entity.CitizenEntity;
-import uz.internal_affairs.entity.RegionEntity;
 import uz.internal_affairs.entity.UserEntity;
 import uz.internal_affairs.interfaces.CitizenInterface;
 import uz.internal_affairs.repository.CategoryRepository;
@@ -120,7 +119,7 @@ public class CitizenService {
                     return interfaceToHuntingWeaponsCitizenDto(pageCitizens);
                 }
             } else {
-                return Collections.singletonList(entityToAllCitizenDto(pageCitizens));
+                return entityToAllCitizenDto(pageCitizens);
             }
         }
 
@@ -131,7 +130,7 @@ public class CitizenService {
 
     public List<? extends BaseCitizenDto> getCategoryDateRegionFilter(HttpServletRequest request, FilterForm filterForm) {
         Sort sort = orderSortField("id");
-        var pageable = pageable(sort, filterForm);
+        Pageable pageable = pageable(sort, filterForm);
         Map<String, Object> filterMap = filterForm.getFilter();
 
         Long categoryId = null;
@@ -203,8 +202,8 @@ public class CitizenService {
             dto.setLastName(cInterface.getLast_name());
             dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
             dto.setMiddleName(cInterface.getMiddle_name());
-            dto.setRegionName(cInterface.getRegion_name());
-            dto.setNeighborhoodName(cInterface.getNeighborhood_name());
+//            dto.setRegionName(cInterface.getRegion_name());
+//            dto.setNeighborhoodName(cInterface.getNeighborhood_name());
             dto.setRegionId(cInterface.getRegion_id());
             dto.setLocationInformation(cInterface.getLocation_information());
             dto.setCauseOfEvent(cInterface.getCause_of_event());
@@ -228,8 +227,8 @@ public class CitizenService {
             dto.setRegionId(citizen.getRegion_id());
             dto.setCategory(TOTAL_CHECKED_OBJECT_GUARDS.name());
             dto.setLocationInformation(citizen.getLocation_information());
-            dto.setRegion_name(citizen.getRegion_name());
-            dto.setNeighborhood_name(citizen.getNeighborhood_name());
+//            dto.setRegion_name(citizen.getRegion_name());
+//            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setLocationInformationObject(citizen.getLocation_information_object());
             citizenList.add(dto);
         }
@@ -247,8 +246,8 @@ public class CitizenService {
             dto.setPhoneNumber(citizen.getPhone_number());
             dto.setCategoryId(citizen.getCategory_id());
             dto.setRegionId(citizen.getRegion_id());
-            dto.setRegion_name(citizen.getRegion_name());
-            dto.setNeighborhood_name(citizen.getNeighborhood_name());
+//            dto.setRegion_name(citizen.getRegion_name());
+//            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setLocationInformation(citizen.getLocation_information());
             dto.setEmployeeSummary(citizen.getEmployee_summary());
             citizenList.add(dto);
@@ -268,8 +267,8 @@ public class CitizenService {
             dto.setCategoryId(citizen.getCategory_id());
             dto.setCategory(CAUGHT_WANTED_CITIZEN.name());
             dto.setRegionId(citizen.getRegion_id());
-            dto.setRegion_name(citizen.getRegion_name());
-            dto.setNeighborhood_name(citizen.getNeighborhood_name());
+//            dto.setRegion_name(citizen.getRegion_name());
+//            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setLocationInformation(citizen.getLocation_information());
             dto.setEmployeeSummary(citizen.getEmployee_summary());
             caughtWantedCitizenDtoList.add(dto);
@@ -291,8 +290,8 @@ public class CitizenService {
             dto.setLocationInformation(citizen.getLocation_information());
             dto.setEmployeeSummary(citizen.getEmployee_summary());
             dto.setStatement(citizen.getStatement());
-            dto.setRegion_name(citizen.getRegion_name());
-            dto.setNeighborhood_name(citizen.getNeighborhood_name());
+//            dto.setRegion_name(citizen.getRegion_name());
+//            dto.setNeighborhood_name(citizen.getNeighborhood_name());
             dto.setPlaceOfImport(citizen.getPlace_of_import());
             citizenDtoList.add(dto);
         }
@@ -311,8 +310,8 @@ public class CitizenService {
             dto.setCategoryId(cInterface.getCategory_id());
             dto.setCreatedDate(cInterface.getCreated_date());
             dto.setLocationInformation(cInterface.getLocation_information());
-            dto.setRegion_name(cInterface.getRegion_name());
-            dto.setNeighborhood_name(cInterface.getNeighborhood_name());
+//            dto.setRegion_name(cInterface.getRegion_name());
+//            dto.setNeighborhood_name(cInterface.getNeighborhood_name());
             dto.setStandUpPROF(cInterface.getStand_upprof());
             dto.setEmployeeSummary(cInterface.getEmployee_summary());
             dto.setPhoneNumber(cInterface.getPhone_number());
@@ -334,8 +333,8 @@ public class CitizenService {
             dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
             dto.setCategory(IIO_CITIZEN.name());
             dto.setMiddleName(cInterface.getMiddle_name());
-            dto.setRegion_name(cInterface.getRegion_name());
-            dto.setNeighborhood_name(cInterface.getNeighborhood_name());
+//            dto.(cInterface.getRegion_name());
+//            dto.setNeighborhood_name(cInterface.getNeighborhood_name());
             dto.setRegionId(cInterface.getRegion_id());
             dto.setLocationInformation(cInterface.getLocation_information());
             dto.setCauseOfEvent(cInterface.getCause_of_event());
@@ -427,8 +426,8 @@ public class CitizenService {
                 dto.setLastName(cInterface.getLast_name());
                 dto.setBirthDate(DateUtil.format(cInterface.getBirth_date(), DateUtil.PATTERN14));
                 dto.setMiddleName(cInterface.getMiddle_name());
-                dto.setRegionName(cInterface.getRegion_name());
-                dto.setNeighborhoodName(cInterface.getNeighborhood_name());
+//                dto.setRegionName(cInterface.getRegion_name());
+//                dto.setNeighborhoodName(cInterface.getNeighborhood_name());
                 dto.setRegionId(cInterface.getRegion_id());
                 dto.setLocationInformation(cInterface.getLocation_information());
                 dto.setCauseOfEvent(cInterface.getCause_of_event());

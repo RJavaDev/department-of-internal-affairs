@@ -29,7 +29,7 @@ public class UserEntity extends BaseServerModifierEntity implements UserDetails 
   private String middleName;
   private Date birthDate;
   private String phoneNumber;
-  private String regionId;
+  private Long regionId;
   private String neighborhoodId;
   @Column(unique = true,nullable = false)
   private String username;

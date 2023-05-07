@@ -2,6 +2,8 @@ package uz.internal_affairs.sevice;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uz.internal_affairs.dto.RegionDto;
 import uz.internal_affairs.entity.RegionEntity;
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RegionService {
     private final RegionRepository regionRepository;
-
+    private final Logger log = LoggerFactory.getLogger(getClass().getName());
 
     public Object regionTree(Long regionId){
         List<RegionEntity> parentRegions = regionRepository.findAllByParentId(regionId);

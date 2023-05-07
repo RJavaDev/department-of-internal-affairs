@@ -2,6 +2,7 @@ package uz.internal_affairs.repository;
 
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,11 +17,40 @@ import java.util.Optional;
 
 public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
 
-    /**
-     *
-     * */
+    @Query(value = "SELECT d_cit.*, d_parrent.name AS region_name, d_chaild.name AS neighborhood_name\n" +
+            "FROM d_citizen d_cit\n" +
+            "\n" +
+            "         INNER JOIN d_region d_chaild ON d_cit.user_id = :userId AND  d_cit.region_id = d_chaild.id\n" +
+            "         INNER JOIN d_region d_parrent ON d_chaild.parent_id = d_parrent.id\n" +
+            "    AND d_cit.created_date >= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent')\n" +
+            "    AND d_cit.created_date <= date_trunc('month', current_timestamp AT TIME ZONE 'Asia/Tashkent' + INTERVAL '1 month')\n" +
+            "WHERE d_cit.status <> 'DELETE'",nativeQuery = true)
+    Page<CitizenInterface> getUserJobs(@Param("userId")Long userId, Pageable pageable);
+
+    @Query(value = "SELECT d_c.*,\n" +
+            "       (SELECT dr_parrent.name || ' ' || dr_chaild.name\n" +
+            "        FROM d_region dr_chaild\n" +
+            "                 INNER JOIN d_region dr_parrent\n" +
+            "                 ON d_c.region_id = dr_chaild.id\n" +
+            "                 AND dr_chaild.parent_id = dr_parrent.id) AS citizen_address\n" +
+            "FROM d_citizen d_c\n" +
+            "WHERE d_c.status <> 'DELETED' AND d_c.created_date BETWEEN\n" +
+            "    COALESCE(:startDate, CAST('1970-01-01 00:00:00' AS TIMESTAMP WITHOUT TIME ZONE))\n" +
+            "    AND COALESCE(:endDate, NOW())\n" +
+            "  AND (:categoryId IS NULL OR d_c.category_id = :categoryId)\n" +
+            "  AND (:regionId IS NULL OR d_c.region_id = :regionId)",nativeQuery = true)
+
+    Page<CitizenInterface> getCategoryDateRegionFilter(
+            @Param("categoryId") Long categoryId,
+            @Param("regionId") Long regionId,
+            @Param("startDate")Date startDate,
+            @Param("endDate") Date endDate,
+            Pageable pageable
+    );
+
+
     @Query("from CitizenEntity c where c.status <> 'DELETED' and (?1 IS NULL OR (c.categoryEntity.name = ?1))")
-    List<CitizenEntity> rows(@Param("category") String category);
+    Page<CitizenEntity> rows(Pageable pageable, @Param("category") String category);
 
     @Query(value = "SELECT\n" +
                    "      dc.*,\n" +
@@ -46,7 +76,7 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
                    "where (:category IS NULL OR dc.category_id = (select id from d_category where name = :category)) and dc.status <> 'DELETED'",
                    countProjection = "SELECT count(*) FROM d_citizen WHERE (:category IS NULL OR dc.category_id = (select id from d_category where name = :category)) and dc.status <> 'DELETED'",
                    nativeQuery = true)
-    List<CitizenInterface> list(@Param("category") String category);
+    Page<CitizenInterface> list(@Param("category") String category, Pageable pageable);
 
     @Query(value = "select count(*) from d_citizen dc where dc.status <> 'DELETED' AND (:category IS NULL OR (dc.category_id = (select id from d_category where name = :category)))", nativeQuery = true)
     Integer getTotal(@Param("category") String category);
@@ -92,5 +122,4 @@ public interface CitizenRepository extends JpaRepository<CitizenEntity, Long> {
             @Param("offset") int offset,
             @Param("limit") int limit
     );
-
 }
